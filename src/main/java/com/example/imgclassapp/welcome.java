@@ -1,4 +1,4 @@
-package com.example.imgclassapp;// Main.java
+package com.example.imgclassapp;
 
 
 import javafx.application.Application;
@@ -32,6 +32,16 @@ public class welcome extends Application {
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(getClass().getResource("/styles/welcome.css").toExternalForm());
 
+        // Set button action to switch to classification page
+        startButton.setOnAction(e -> {
+            classification classificationPage = new classification();
+            try {
+                classificationPage.start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         // Configure stage
         primaryStage.setTitle("Classifier Application");
         primaryStage.setMinWidth(400);  // Minimum width
@@ -44,4 +54,3 @@ public class welcome extends Application {
         launch(args);
     }
 }
-

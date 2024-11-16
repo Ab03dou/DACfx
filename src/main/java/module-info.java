@@ -11,6 +11,7 @@ module com.example.imgclassapp {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires kotlin.stdlib;
+    requires java.sql;
 
     opens com.example.imgclassapp to javafx.fxml;
     exports com.example.imgclassapp;

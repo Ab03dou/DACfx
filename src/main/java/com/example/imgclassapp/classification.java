@@ -83,23 +83,21 @@ public class classification extends Application {
         VBox rightSection = new VBox(20);
         rightSection.getStyleClass().add("right-section");
 
-        Label welcomeLabel = new Label("Transform Your Images with AI");
-        welcomeLabel.getStyleClass().add("welcome-label");
-
-        Label subLabel = new Label("Drop your images below and let our AI classify them instantly");
-        subLabel.getStyleClass().add("sub-label");
-
         VBox uploadArea = new VBox(15);
         uploadArea.getStyleClass().add("upload-area");
 
-        Label uploadLabel = new Label("Drop Files Here");
+        Label uploadLabel = new Label("Classify Your Images with AI");
         uploadLabel.getStyleClass().add("upload-label");
+
+
+        Label subLabel = new Label("Select your images below and let our AI classify them instantly");
+        subLabel.getStyleClass().add("sub-label");
 
         Button addButton = new Button("Choose Files");
         addButton.getStyleClass().add("add-button");
 
-        uploadArea.getChildren().addAll(uploadLabel, addButton);
-        rightSection.getChildren().addAll(welcomeLabel, subLabel, uploadArea);
+        uploadArea.getChildren().addAll(uploadLabel,subLabel, addButton);
+        rightSection.getChildren().addAll(uploadArea);
 
         // Add sections to root
         root.getChildren().addAll(rightSection, leftSection);

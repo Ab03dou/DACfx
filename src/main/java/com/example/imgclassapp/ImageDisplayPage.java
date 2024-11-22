@@ -1,6 +1,8 @@
 package com.example.imgclassapp;
 
+import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,23 +13,25 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
-public class ImageDisplayPage {
+public class ImageDisplayPage extends Application {
 
-    private Stage stage;
     private List<File> images;
 
-    public ImageDisplayPage(Stage stage, List<File> images) {
-        this.stage = stage;
+    public ImageDisplayPage(List<File> images) {
         this.images = images;
     }
 
-    public void show() {
+    @Override
+    public void start(Stage primaryStage) throws FileNotFoundException {
 
         TilePane tilePane = new TilePane();
         tilePane.setHgap(10);
         tilePane.setVgap(10);
+        tilePane.setPrefWidth(700);
+        tilePane.setPrefHeight(700);
 
         tilePane.getStyleClass().add("gallry");
 
@@ -42,22 +46,25 @@ public class ImageDisplayPage {
 
             tilePane.getChildren().add(imageView);
         }
+        Button backButton = new Button("<-");
+        backButton.setOnAction(e -> {
+            primaryStage.close();
+        });
         ScrollPane scrollPane = new ScrollPane(tilePane);
         scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide horizontal scroll bar
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
-
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         // Wrap the grid in a StackPane with a light blue background
-        VBox root = new VBox(scrollPane);
+        VBox root = new VBox(backButton, scrollPane);
         root.getStyleClass().add("root");
 
         // Create and set the scene for the new window
         Scene imageScene = new Scene(root, 800, 600);
         imageScene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
-        stage.setTitle("Images in Square");
-        stage.setScene(imageScene);
-        stage.show();
+        primaryStage.setTitle("Images in Square");
+        primaryStage.setScene(imageScene);
+        primaryStage.show();
     }
 
     private void showLargeImage(File file) {

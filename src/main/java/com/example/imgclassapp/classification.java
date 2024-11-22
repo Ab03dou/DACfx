@@ -68,7 +68,7 @@ public class classification extends Application {
             final int index = i;
             contactContainer.setOnMouseClicked(event -> {
                 try {
-                    showImageDisplayPage(primaryStage, getFilesForClassification(CLASSIFICATIONS[index]));
+                    showImageDisplayPage(getFilesForClassification(CLASSIFICATIONS[index]));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -205,9 +205,9 @@ public class classification extends Application {
 
     }
 
-    private void showImageDisplayPage(Stage primaryStage, List<File> images) {
-        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(primaryStage, images);
-        imageDisplayPage.show();
+    private void showImageDisplayPage(List<File> images) throws FileNotFoundException {
+        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images);
+        imageDisplayPage.start(new Stage());
     }
 
     public static void main(String[] args) {

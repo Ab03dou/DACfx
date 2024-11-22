@@ -12,6 +12,17 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
+.gallry {
+    -fx-pref-width: 700px;
+    -fx-padding: 30px;
+    -fx-hgap: 20px; 
+    -fx-vgap: 50px;  
+    -fx-background-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+.root{
+    -fx-padding: 30px;
+}
 /* Updated class buttons area */
 .class-buttons-area {
     -fx-hgap: 20px;  /* Increased gap between squares */

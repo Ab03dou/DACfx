@@ -65,6 +65,15 @@ public class classification extends Application {
 
             classButtonsArea.getChildren().add(contactContainer);
 
+            final int index = i;
+            contactContainer.setOnMouseClicked(event -> {
+                try {
+                    showImageDisplayPage(primaryStage, getFilesForClassification(CLASSIFICATIONS[index]));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
+
         }
         showIMages();
 
@@ -106,7 +115,8 @@ public class classification extends Application {
             if (files != null) {
                 for (File file : files) {
                     try {
-                        // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji 1 kima dok
+                        // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji 1
+                        // kima dok
                         saveFileToProjectFolder(file, CLASSIFICATIONS[1]);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -127,31 +137,34 @@ public class classification extends Application {
         primaryStage.show();
     }
 
-    private void showIMages() throws FileNotFoundException {
-        for (int j = 0; j < CLASSIFICATIONS.length; j++) {
-            List<File> files = new ArrayList<>();
-            if (!CLASSIFICATIONS[j].equals("All")) {
-                File directory = new File(IMAGE_DIRECTORY + "/" + CLASSIFICATIONS[j]);
-                File[] directoryFiles = directory.listFiles(
-                        (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
-                if (directoryFiles != null) {
-                    files.addAll(Arrays.asList(directoryFiles));
-                }
-                displayImagesFromDirectory(files, j);
-            } else {
-                File[] directories = new File(IMAGE_DIRECTORY).listFiles(File::isDirectory);
-                if (directories != null) {
-                    for (File directory : directories) {
-                        File[] directoryFiles = directory.listFiles(
-                                (dir, name) -> name.toLowerCase().endsWith(".jpg")
-                                        || name.toLowerCase().endsWith(".png"));
-                        if (directoryFiles != null) {
-                            files.addAll(Arrays.asList(directoryFiles));
-                        }
+    private List<File> getFilesForClassification(String classification) throws FileNotFoundException {
+        List<File> files = new ArrayList<>();
+        if (!classification.equals("All")) {
+            File directory = new File(IMAGE_DIRECTORY + "/" + classification);
+            File[] directoryFiles = directory.listFiles(
+                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+            if (directoryFiles != null) {
+                files.addAll(Arrays.asList(directoryFiles));
+            }
+        } else {
+            File[] directories = new File(IMAGE_DIRECTORY).listFiles(File::isDirectory);
+            if (directories != null) {
+                for (File directory : directories) {
+                    File[] directoryFiles = directory.listFiles(
+                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+                    if (directoryFiles != null) {
+                        files.addAll(Arrays.asList(directoryFiles));
                     }
                 }
-                displayImagesFromDirectory(files, j);
             }
+        }
+        return files;
+    }
+
+    private void showIMages() throws FileNotFoundException {
+        for (int j = 0; j < CLASSIFICATIONS.length; j++) {
+            List<File> files = getFilesForClassification(CLASSIFICATIONS[j]);
+            displayImagesFromDirectory(files, j);
         }
     }
 
@@ -190,6 +203,11 @@ public class classification extends Application {
         }
         showIMages();
 
+    }
+
+    private void showImageDisplayPage(Stage primaryStage, List<File> images) {
+        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(primaryStage, images);
+        imageDisplayPage.show();
     }
 
     public static void main(String[] args) {

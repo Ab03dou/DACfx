@@ -12,6 +12,7 @@ module com.example.imgclassapp {
     requires com.almasb.fxgl.all;
     requires kotlin.stdlib;
     requires java.sql;
+    requires javafx.graphics;
 
     opens com.example.imgclassapp to javafx.fxml;
     exports com.example.imgclassapp;

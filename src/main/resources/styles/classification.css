@@ -1,40 +1,30 @@
 /* Main container */
 .main-container {
     -fx-padding: 20px;
-    -fx-spacing: 20px;
 }
 
 /* Left section for classifications */
 .left-section {
     -fx-pref-width: 700px;
-    -fx-padding: 20px 30px;
-    -fx-spacing: 20px;
+    -fx-padding: 30px;
     -fx-background-color: #3498db;
     -fx-background-radius: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
-    -fx-alignment: top-left;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
 /* Updated class buttons area */
 .class-buttons-area {
-    -fx-background-color: transparent;
-    -fx-grid-lines-visible: false;
     -fx-hgap: 20px;  /* Increased gap between squares */
-    -fx-vgap: 20px;  /* Increased gap between squares */
+    -fx-vgap: 50px;  /* Increased gap between squares */
     -fx-padding: 10px;
-    -fx-alignment: center;
 }
 
 /* Updated content area (squares) */
 .content-area {
-    -fx-background-color: #AED6F1; /* Light blue, matches the overall theme */
+    -fx-background-color: #AED6F1;    /* Light blue, matches the overall theme */
     -fx-alignment: center;
     -fx-background-radius: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
-    -fx-min-height: 120px; /* Smaller squares */
-    -fx-min-width: 120px; /* Smaller squares */
-    -fx-max-width: infinity;
-    -fx-max-height: infinity;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
     -fx-cursor: hand;
     -fx-padding: 10px;
 }
@@ -42,16 +32,14 @@
 /* Hover effect for content areas */
 .content-area:hover {
     -fx-background-color: #98d4f2;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
-/* Image name styling */
-..image-name-label {
-     font-size: 12px;
-     text-align: center;
-     margin-top: 5px;
-     color: #333;
- }
+
+.image-name-label {
+    -fx-text-fill: #98d4f2;
+    -fx-font-weight: bold;
+}
 
 
 /* Right section styling remains the same */
@@ -79,7 +67,7 @@
 /* Hover effect for upload area */
 .upload-area:hover {
     -fx-background-color: #98d4f2;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 3);
 }
 
 /* Label styling for upload */
@@ -105,13 +93,13 @@
     -fx-padding: 12px 30px;
     -fx-background-radius: 20px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
 /* Hover effect for add button */
 .add-button:hover {
     -fx-background-color: #2980b9;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 3);
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
 }
@@ -125,13 +113,13 @@
     -fx-pref-width: infinity;
     -fx-background-radius: 5px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
 
 /* Hover effect for class button */
 .class-button:hover {
     -fx-background-color: #f8f9fa;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
 /* Make sure content areas are square on resize */
@@ -144,7 +132,9 @@
 
 /* Responsive layout */
 @media screen and (max-width: 600px) {
-    .left-section, .right-section {
+
+    .left-section,
+    .right-section {
         -fx-padding: 10px;
     }
 
@@ -164,7 +154,8 @@
 /* Basic style for the page */
 /* Basic style for the page */
 .image-display-page {
-    -fx-background-color: #AED6F1; /* Light blue background */
+    -fx-background-color: #AED6F1;
+    /* Light blue background */
     -fx-padding: 20px;
     -fx-spacing: 20px;
 }

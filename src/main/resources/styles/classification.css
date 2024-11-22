@@ -19,8 +19,8 @@
     -fx-background-color: #2980b9;
 }
 
-/* Left section for classifications */
-.left-section {
+/* right section for classifications */
+.right-section {
     -fx-pref-width: 700px;
     -fx-padding: 30px;
     -fx-background-color: #3498db;
@@ -39,16 +39,15 @@
 .root{
     -fx-padding: 30px;
 }
-/* Updated class buttons area */
-.class-buttons-area {
+
+.classes-area {
     -fx-hgap: 20px;  /* Increased gap between squares */
     -fx-vgap: 50px;  /* Increased gap between squares */
     -fx-padding: 10px;
 }
 
-/* Updated content area (squares) */
-.content-area {
-    -fx-background-color: #AED6F1;    /* Light blue, matches the overall theme */
+.classCn-area {
+    -fx-background-color: #AED6F1;  
     -fx-alignment: center;
     -fx-background-radius: 5px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
@@ -57,7 +56,7 @@
 }
 
 /* Hover effect for content areas */
-.content-area:hover {
+.classCn-area:hover {
     -fx-background-color: #98d4f2;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
@@ -69,8 +68,7 @@
 }
 
 
-/* Right section styling remains the same */
-.right-section {
+.left-section {
     -fx-pref-width: 500px;
     -fx-min-width: 300px;
     -fx-spacing: 15px;
@@ -78,7 +76,6 @@
     -fx-padding: 20px;
 }
 
-/* Upload area */
 .upload-area {
     -fx-background-color: #87CEEB;
     -fx-padding: 40px;
@@ -91,13 +88,11 @@
     -fx-border-style: dashed;
 }
 
-/* Hover effect for upload area */
 .upload-area:hover {
     -fx-background-color: #98d4f2;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 3);
 }
 
-/* Label styling for upload */
 .upload-label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -112,7 +107,6 @@
     -fx-text-alignment: center;
 }
 
-/* Button styling */
 .add-button {
     -fx-background-color: #3498db;
     -fx-text-fill: white;
@@ -123,7 +117,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
-/* Hover effect for add button */
 .add-button:hover {
     -fx-background-color: #2980b9;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 3);
@@ -131,7 +124,6 @@
     -fx-scale-y: 1.02;
 }
 
-/* Class button styling */
 .class-button {
     -fx-background-color: white;
     -fx-text-fill: #2c3e50;
@@ -143,82 +135,14 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
 
-/* Hover effect for class button */
 .class-button:hover {
     -fx-background-color: #f8f9fa;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
 }
 
-/* Make sure content areas are square on resize */
-.class-buttons-area .content-area {
+.classes-area .classCn-area {
     -fx-min-width: 120px;
     -fx-min-height: 120px;
     -fx-max-width: 120px;
     -fx-max-height: 120px;
-}
-
-/* Responsive layout */
-@media screen and (max-width: 600px) {
-
-    .left-section,
-    .right-section {
-        -fx-padding: 10px;
-    }
-
-    .welcome-label {
-        -fx-font-size: 24px;
-    }
-
-    .sub-label {
-        -fx-font-size: 12px;
-    }
-
-    .upload-area {
-        -fx-padding: 20px;
-    }
-}
-
-/* Basic style for the page */
-/* Basic style for the page */
-.image-display-page {
-    -fx-background-color: #AED6F1;
-    /* Light blue background */
-    -fx-padding: 20px;
-    -fx-spacing: 20px;
-}
-
-
-/* Title/Header area with white background */
-.title-area {
-    -fx-background-color: white;
-    -fx-padding: 20px;
-    -fx-alignment: center;
-}
-
-/* Title label styling (larger font, bold, blue text) */
-.title-area .label {
-    -fx-font-size: 36px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2980b9;
-}
-
-/* Light blue image container */
-.image-container {
-    -fx-background-color: #AED6F1;
-    -fx-padding: 0;
-    -fx-spacing: 0;
-    -fx-alignment: center;
-    -fx-background-radius: 0;
-    -fx-effect: none;
-    -fx-max-width: 100%;
-    -fx-pref-height: 600px;
-    -fx-min-height: 600px;
-}
-
-/* Image styling */
-.image-view {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-    -fx-border-width: 0;
-    -fx-background-radius: 0;
 }

@@ -26,39 +26,36 @@ public class classification extends Application {
     private static final String[] CLASSIFICATIONS = { "All", "Document", "People", "Animals", "Nature", "Screenshot",
             "Other" };
 
-    private TilePane classButtonsArea;
+    private TilePane classesArea;
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
 
-        // Main container using HBox for left-right split
         HBox root = new HBox(100);
         root.getStyleClass().add("main-container");
 
-        // Left section for classifications
-        VBox leftSection = new VBox();
-        leftSection.getStyleClass().add("left-section");
+        VBox rightSection = new VBox();
+        rightSection.getStyleClass().add("right-section");
 
-        // Create GridPane to arrange the squares
-        classButtonsArea = new TilePane();
-        classButtonsArea.getStyleClass().add("class-buttons-area");
+        classesArea = new TilePane();
+        classesArea.getStyleClass().add("classes-area");
 
         for (int i = 0; i < CLASSIFICATIONS.length; i++) {
-            GridPane contactAr = new GridPane();
-            contactAr.getStyleClass().add("content-area");
-            contactAr.setHgap(10);
-            contactAr.setVgap(10);
+            GridPane classCn = new GridPane();
+            classCn.getStyleClass().add("classCn-area");
+            classCn.setHgap(10);
+            classCn.setVgap(10);
 
-            Label contactArName = new Label(CLASSIFICATIONS[i]);
-            contactArName.getStyleClass().add("image-name-label");
+            Label classCnName = new Label(CLASSIFICATIONS[i]);
+            classCnName.getStyleClass().add("image-name-label");
 
-            VBox contactContainer = new VBox(5); // 5 is the spacing between elements
-            contactContainer.getChildren().addAll(contactAr, contactArName);
+            VBox contactClassCn = new VBox(5); // 5 is the spacing between elements
+            contactClassCn.getChildren().addAll(classCn, classCnName);
 
-            classButtonsArea.getChildren().add(contactContainer);
+            classesArea.getChildren().add(contactClassCn);
 
             final int index = i;
-            contactContainer.setOnMouseClicked(event -> {
+            contactClassCn.setOnMouseClicked(event -> {
                 try {
                     showImageDisplayPage(getFilesForClassification(CLASSIFICATIONS[index]));
                 } catch (FileNotFoundException e) {
@@ -67,20 +64,18 @@ public class classification extends Application {
             });
         }
 
-        showIMages();
+        showIMagesInClasses();
 
-        leftSection.getChildren().addAll(classButtonsArea);
+        rightSection.getChildren().addAll(classesArea);
 
-        // Right section for upload
-        VBox rightSection = new VBox(20);
-        rightSection.getStyleClass().add("right-section");
+        VBox leftSection = new VBox(20);
+        leftSection.getStyleClass().add("left-section");
 
         VBox uploadArea = new VBox(15);
         uploadArea.getStyleClass().add("upload-area");
 
         Label uploadLabel = new Label("Classify Your Images with AI");
         uploadLabel.getStyleClass().add("upload-label");
-
 
         Label subLabel = new Label("Select your images below and let our AI classify them instantly");
         subLabel.getStyleClass().add("sub-label");
@@ -89,12 +84,10 @@ public class classification extends Application {
         addButton.getStyleClass().add("add-button");
 
         uploadArea.getChildren().addAll(uploadLabel,subLabel, addButton);
-        rightSection.getChildren().addAll(uploadArea);
+        leftSection.getChildren().addAll(uploadArea);
 
-        // Add sections to root
-        root.getChildren().addAll(rightSection, leftSection);
+        root.getChildren().addAll(leftSection, rightSection);
 
-        // File chooser function
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image Files");
         fileChooser.getExtensionFilters().addAll(
@@ -105,7 +98,7 @@ public class classification extends Application {
             if (files != null) {
                 for (File file : files) {
                     try {
-                        // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji 1
+                        // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji
                         // kima dok
                         saveFileToProjectFolder(file, CLASSIFICATIONS[1]);
                     } catch (IOException e) {
@@ -115,11 +108,9 @@ public class classification extends Application {
             }
         });
 
-        // Create and set scene
         Scene scene = new Scene(root, 1380, 700);
         scene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
-        // Configure stage
         primaryStage.setTitle("Image Classification");
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);
@@ -132,7 +123,7 @@ public class classification extends Application {
         if (!classification.equals("All")) {
             File directory = new File(IMAGE_DIRECTORY + "/" + classification);
             File[] directoryFiles = directory.listFiles(
-                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpeg"));
             if (directoryFiles != null) {
                 files.addAll(Arrays.asList(directoryFiles));
             }
@@ -141,7 +132,7 @@ public class classification extends Application {
             if (directories != null) {
                 for (File directory : directories) {
                     File[] directoryFiles = directory.listFiles(
-                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png"));
+                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpeg"));
                     if (directoryFiles != null) {
                         files.addAll(Arrays.asList(directoryFiles));
                     }
@@ -151,7 +142,7 @@ public class classification extends Application {
         return files;
     }
 
-    private void showIMages() throws FileNotFoundException {
+    private void showIMagesInClasses() throws FileNotFoundException {
         for (int j = 0; j < CLASSIFICATIONS.length; j++) {
             List<File> files = getFilesForClassification(CLASSIFICATIONS[j]);
             displayImagesFromDirectory(files, j);
@@ -168,9 +159,9 @@ public class classification extends Application {
                 CustomImageView imageView = new CustomImageView(image, imagePath);
                 imageView.setFitWidth(40);
                 imageView.setFitHeight(40);
-                VBox vBox = (VBox) classButtonsArea.getChildren().get(classificationIndex);
-                GridPane contactAr = (GridPane) vBox.getChildren().get(0);
-                contactAr.add(imageView, i % 2, i / 2);
+                VBox vBox = (VBox) classesArea.getChildren().get(classificationIndex);
+                GridPane classCn = (GridPane) vBox.getChildren().get(0);
+                classCn.add(imageView, i % 2, i / 2);
             }
         }
     }
@@ -191,7 +182,7 @@ public class classification extends Application {
                 outputStream.write(buffer, 0, length);
             }
         }
-        showIMages();
+        showIMagesInClasses();
 
     }
 

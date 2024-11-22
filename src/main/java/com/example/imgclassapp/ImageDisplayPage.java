@@ -2,14 +2,11 @@ package com.example.imgclassapp;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -25,7 +22,7 @@ public class ImageDisplayPage extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
+    public void start(Stage stage) throws FileNotFoundException {
 
         TilePane tilePane = new TilePane();
         tilePane.setHgap(10);
@@ -35,7 +32,6 @@ public class ImageDisplayPage extends Application {
 
         tilePane.getStyleClass().add("gallry");
 
-        // Add each image to the grid
         for (int i = 0; i < images.size(); i++) {
             File imageFile = images.get(i);
             Image image = new Image(imageFile.toURI().toString());
@@ -46,26 +42,18 @@ public class ImageDisplayPage extends Application {
 
             tilePane.getChildren().add(imageView);
         }
-        Button backButton = new Button("");
-        backButton.getStyleClass().add("back-button");
-        backButton.setOnAction(e -> {
-            primaryStage.close();
-        });
-        ScrollPane scrollPane = new ScrollPane(tilePane);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        // Wrap the grid in a StackPane with a light blue background
-        VBox root = new VBox(backButton, scrollPane);
+        ScrollPane root = new ScrollPane(tilePane);
+        root.setFitToWidth(true);
+        root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         root.getStyleClass().add("root");
 
-        // Create and set the scene for the new window
         Scene imageScene = new Scene(root, 800, 600);
         imageScene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
-        primaryStage.setTitle("Images in Square");
-        primaryStage.setScene(imageScene);
-        primaryStage.show();
+        stage.setTitle("Images");
+        stage.setScene(imageScene);
+        stage.show();
     }
 
     private void showLargeImage(File file) {
@@ -74,8 +62,7 @@ public class ImageDisplayPage extends Application {
 
         CustomImageView imageView = new CustomImageView(image, file.getAbsolutePath());
         imageView.setPreserveRatio(true);
-
-        // Fit image to the stage dimensions
+        
         imageView.setFitHeight(600);
         imageView.setFitWidth(800);
 
@@ -84,7 +71,7 @@ public class ImageDisplayPage extends Application {
 
         Scene scene = new Scene(pane, 800, 600);
 
-        stage.setTitle("Enlarged Image");
+        stage.setTitle("Image");
         stage.setScene(scene);
         stage.show();
     }

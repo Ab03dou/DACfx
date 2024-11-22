@@ -46,7 +46,8 @@ public class ImageDisplayPage extends Application {
 
             tilePane.getChildren().add(imageView);
         }
-        Button backButton = new Button("<-");
+        Button backButton = new Button("");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> {
             primaryStage.close();
         });

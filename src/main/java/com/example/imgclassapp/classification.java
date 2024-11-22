@@ -1,13 +1,10 @@
 package com.example.imgclassapp;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,11 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +32,7 @@ public class classification extends Application {
     public void start(Stage primaryStage) throws FileNotFoundException {
 
         // Main container using HBox for left-right split
-        HBox root = new HBox(20);
+        HBox root = new HBox(100);
         root.getStyleClass().add("main-container");
 
         // Left section for classifications
@@ -73,8 +65,8 @@ public class classification extends Application {
                     e.printStackTrace();
                 }
             });
-
         }
+
         showIMages();
 
         leftSection.getChildren().addAll(classButtonsArea);
@@ -106,7 +98,7 @@ public class classification extends Application {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image Files");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
 
         addButton.setOnAction(event -> {
             List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
@@ -124,7 +116,7 @@ public class classification extends Application {
         });
 
         // Create and set scene
-        Scene scene = new Scene(root, 1200, 800);
+        Scene scene = new Scene(root, 1380, 700);
         scene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
         // Configure stage

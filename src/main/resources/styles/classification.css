@@ -1,29 +1,60 @@
-
+/* Main container */
 .main-container {
-    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f2f5);
     -fx-padding: 20px;
     -fx-spacing: 20px;
 }
 
+/* Left section for classifications */
 .left-section {
-    -fx-pref-width: 700px; /* Increased width */
-    -fx-min-width: 600px; /* Minimum width to ensure consistency */
-    -fx-padding: 20px 30px; /* Add more padding for spacing */
-    -fx-spacing: 20px; /* Space between elements */
+    -fx-pref-width: 700px;
+    -fx-padding: 20px 30px;
+    -fx-spacing: 20px;
     -fx-background-color: #3498db;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
-    -fx-alignment: top-left; /* Align content to top-left */
+    -fx-alignment: top-left;
 }
 
-
-.section-title {
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-padding: 0 0 10px 0;
+/* Updated class buttons area */
+.class-buttons-area {
+    -fx-background-color: transparent;
+    -fx-grid-lines-visible: false;
+    -fx-hgap: 20px;  /* Increased gap between squares */
+    -fx-vgap: 20px;  /* Increased gap between squares */
+    -fx-padding: 10px;
+    -fx-alignment: center;
 }
 
+/* Updated content area (squares) */
+.content-area {
+    -fx-background-color: #AED6F1; /* Light blue, matches the overall theme */
+    -fx-alignment: center;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+    -fx-min-height: 120px; /* Smaller squares */
+    -fx-min-width: 120px; /* Smaller squares */
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+    -fx-cursor: hand;
+    -fx-padding: 10px;
+}
+
+/* Hover effect for content areas */
+.content-area:hover {
+    -fx-background-color: #98d4f2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* Image name styling */
+..image-name-label {
+     font-size: 12px;
+     text-align: center;
+     margin-top: 5px;
+     color: #333;
+ }
+
+
+/* Right section styling remains the same */
 .right-section {
     -fx-pref-width: 500px;
     -fx-min-width: 300px;
@@ -32,38 +63,26 @@
     -fx-padding: 20px;
 }
 
-.welcome-label {
-    -fx-font-size: 32px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-    -fx-text-alignment: center;
-}
-
-.sub-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #7f8c8d;
-    -fx-text-alignment: center;
-    -fx-wrap-text: true;
-}
-
+/* Upload area */
 .upload-area {
     -fx-background-color: #87CEEB;
     -fx-padding: 40px;
     -fx-alignment: center;
     -fx-min-height: 250px;
     -fx-background-radius: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
     -fx-border-color: #ffffff;
     -fx-border-width: 2px;
     -fx-border-radius: 10px;
     -fx-border-style: dashed;
 }
 
+/* Hover effect for upload area */
 .upload-area:hover {
     -fx-background-color: #98d4f2;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 3);
 }
 
+/* Label styling for upload */
 .upload-label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -71,13 +90,14 @@
     -fx-wrap-text: true;
     -fx-text-alignment: center;
 }
+
 .upload-subtext {
     -fx-font-size: 14px;
     -fx-text-fill: #7f8c8d;
     -fx-text-alignment: center;
 }
 
-
+/* Button styling */
 .add-button {
     -fx-background-color: #3498db;
     -fx-text-fill: white;
@@ -88,6 +108,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
 }
 
+/* Hover effect for add button */
 .add-button:hover {
     -fx-background-color: #2980b9;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 3);
@@ -95,10 +116,7 @@
     -fx-scale-y: 1.02;
 }
 
-.class-buttons-area {
-    -fx-spacing: 15px;
-}
-
+/* Class button styling */
 .class-button {
     -fx-background-color: white;
     -fx-text-fill: #2c3e50;
@@ -110,22 +128,21 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
 }
 
+/* Hover effect for class button */
 .class-button:hover {
     -fx-background-color: #f8f9fa;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
 }
 
-.content-area {
-    -fx-background-color: #AED6F1; /* Light blue, matches the overall theme */
-    -fx-min-height: 100px;
-    -fx-padding: 15px; /* Add padding for better spacing inside */
-    -fx-margin: 10px 0;
-    -fx-background-radius: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
+/* Make sure content areas are square on resize */
+.class-buttons-area .content-area {
+    -fx-min-width: 120px;
+    -fx-min-height: 120px;
+    -fx-max-width: 120px;
+    -fx-max-height: 120px;
 }
 
-
-
+/* Responsive layout */
 @media screen and (max-width: 600px) {
     .left-section, .right-section {
         -fx-padding: 10px;
@@ -142,4 +159,48 @@
     .upload-area {
         -fx-padding: 20px;
     }
+}
+
+/* Basic style for the page */
+/* Basic style for the page */
+.image-display-page {
+    -fx-background-color: #AED6F1; /* Light blue background */
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+
+/* Title/Header area with white background */
+.title-area {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+}
+
+/* Title label styling (larger font, bold, blue text) */
+.title-area .label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2980b9;
+}
+
+/* Light blue image container */
+.image-container {
+    -fx-background-color: #AED6F1;
+    -fx-padding: 0;
+    -fx-spacing: 0;
+    -fx-alignment: center;
+    -fx-background-radius: 0;
+    -fx-effect: none;
+    -fx-max-width: 100%;
+    -fx-pref-height: 600px;
+    -fx-min-height: 600px;
+}
+
+/* Image styling */
+.image-view {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
 }

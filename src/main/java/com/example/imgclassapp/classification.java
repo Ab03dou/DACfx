@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
@@ -83,8 +84,16 @@ public class classification extends Application {
         Button addButton = new Button("Choose Files");
         addButton.getStyleClass().add("add-button");
 
-        uploadArea.getChildren().addAll(uploadLabel,subLabel, addButton);
-        leftSection.getChildren().addAll(uploadArea);
+        uploadArea.getChildren().addAll(uploadLabel, subLabel, addButton);
+
+        VBox resVBOX = new VBox();
+        resVBOX.getStyleClass().add("res-VBOX");
+        ScrollPane s = new ScrollPane(resVBOX);
+        s.getStyleClass().add("res-SCROLL");
+
+        s.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        s.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        leftSection.getChildren().addAll(uploadArea, s);
 
         root.getChildren().addAll(leftSection, rightSection);
 
@@ -100,7 +109,9 @@ public class classification extends Application {
                     try {
                         // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji
                         // kima dok
-                        saveFileToProjectFolder(file, CLASSIFICATIONS[1]);
+                        int classNum = 1;
+                        saveFileToProjectFolder(file, CLASSIFICATIONS[classNum]);
+                        showIMagesInResClasses(resVBOX, file, classNum);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -123,7 +134,8 @@ public class classification extends Application {
         if (!classification.equals("All")) {
             File directory = new File(IMAGE_DIRECTORY + "/" + classification);
             File[] directoryFiles = directory.listFiles(
-                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpeg"));
+                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png")
+                            || name.toLowerCase().endsWith(".jpeg"));
             if (directoryFiles != null) {
                 files.addAll(Arrays.asList(directoryFiles));
             }
@@ -132,7 +144,8 @@ public class classification extends Application {
             if (directories != null) {
                 for (File directory : directories) {
                     File[] directoryFiles = directory.listFiles(
-                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpeg"));
+                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png")
+                                    || name.toLowerCase().endsWith(".jpeg"));
                     if (directoryFiles != null) {
                         files.addAll(Arrays.asList(directoryFiles));
                     }
@@ -140,6 +153,20 @@ public class classification extends Application {
             }
         }
         return files;
+    }
+
+    private void showIMagesInResClasses(VBox h, File imageFile ,int r) throws FileNotFoundException {
+
+        Image image = new Image(new FileInputStream(imageFile));
+        String imagePath = imageFile.getAbsolutePath();
+        CustomImageView imageView = new CustomImageView(image, imagePath);
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
+        HBox b = new HBox();
+        Label l = new Label("Classified as: " + CLASSIFICATIONS[r]);
+        b.getChildren().addAll(imageView,l);
+        h.getChildren().add(b);
+        b.getStyleClass().add("res-class-area");
     }
 
     private void showIMagesInClasses() throws FileNotFoundException {

@@ -72,7 +72,6 @@
     -fx-pref-width: 500px;
     -fx-min-width: 300px;
     -fx-spacing: 15px;
-    -fx-alignment: center;
     -fx-padding: 20px;
 }
 
@@ -145,4 +144,27 @@
     -fx-min-height: 120px;
     -fx-max-width: 120px;
     -fx-max-height: 120px;
+}
+
+
+.res-VBOX{
+    -fx-pref-width: 700px;
+    -fx-pref-height: 500px;
+    -fx-background-color: #3498db;
+}
+.res-SCROLL{
+    -fx-pref-width: 700px;
+    -fx-pref-height: 500px;
+    -fx-padding: 30px;
+    -fx-background-color: #3498db;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.res-class-area {
+    -fx-spacing: 10px;
+    -fx-background-color: #AED6F1;
+    -fx-padding: 15px;
+    -fx-border-width: 1px;
+    -fx-alignment: center-left;
 }

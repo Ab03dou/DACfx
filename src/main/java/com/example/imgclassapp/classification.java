@@ -121,7 +121,8 @@ public class classification extends Application {
                         // TODO: fi next sprint nbdlo fl code hada bah iwli ikhyr class bl ai mch tji
                         // kima dok
                         int classNum = 1;
-                        saveFileToProjectFolder(file, CLASSIFICATIONS[classNum]);
+                        MobileNetClassifier m = new MobileNetClassifier();
+                        saveFileToProjectFolder(file, m.classifyImage(file));
                         showIMagesInResClasses(resVBOX, file, classNum);
                         showIMagesInClasses();
                     } catch (IOException e) {

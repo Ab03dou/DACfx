@@ -13,6 +13,7 @@ module com.example.imgclassapp {
     requires kotlin.stdlib;
     requires java.sql;
     requires javafx.graphics;
+    requires ai.djl.api;
 
     opens com.example.imgclassapp to javafx.fxml;
     exports com.example.imgclassapp;

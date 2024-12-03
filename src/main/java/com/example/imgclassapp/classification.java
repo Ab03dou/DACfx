@@ -11,11 +11,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +25,13 @@ import java.util.List;
 public class classification extends Application {
 
     private static final String IMAGE_DIRECTORY = "images";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/";
+    private static final String DB_NAME = "dacBD";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "0100mysql0445";
 
-    private static final String[] CLASSIFICATIONS = { "All", "Document", "People", "Animals", "Nature", "Screenshot",
-            "Other" };
+    private static final String[] CLASSIFICATIONS = {"All", "Document", "People", "Animals", "Nature", "Screenshot",
+            "Other"};
 
     private TilePane classesArea;
 
@@ -58,7 +64,12 @@ public class classification extends Application {
             final int index = i;
             contactClassCn.setOnMouseClicked(event -> {
                 try {
-                    showImageDisplayPage(getFilesForClassification(CLASSIFICATIONS[index]));
+
+                    try (Connection conn = connectToDB()) {
+                        showImageDisplayPage(getFilesForClassification(CLASSIFICATIONS[index], conn));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -112,6 +123,7 @@ public class classification extends Application {
                         int classNum = 1;
                         saveFileToProjectFolder(file, CLASSIFICATIONS[classNum]);
                         showIMagesInResClasses(resVBOX, file, classNum);
+                        showIMagesInClasses();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -129,33 +141,37 @@ public class classification extends Application {
         primaryStage.show();
     }
 
-    private List<File> getFilesForClassification(String classification) throws FileNotFoundException {
+    private List<File> getFilesForClassification(String classification, Connection connection) throws SQLException {
         List<File> files = new ArrayList<>();
-        if (!classification.equals("All")) {
-            File directory = new File(IMAGE_DIRECTORY + "/" + classification);
-            File[] directoryFiles = directory.listFiles(
-                    (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png")
-                            || name.toLowerCase().endsWith(".jpeg"));
-            if (directoryFiles != null) {
-                files.addAll(Arrays.asList(directoryFiles));
+
+        String query = classification.equals("All")
+                ? "SELECT filePath FROM images"
+                : "SELECT filePath FROM images WHERE filePath LIKE ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            if (!classification.equals("All")) {
+                pstmt.setString(1, "%/" + classification + "/%");
             }
-        } else {
-            File[] directories = new File(IMAGE_DIRECTORY).listFiles(File::isDirectory);
-            if (directories != null) {
-                for (File directory : directories) {
-                    File[] directoryFiles = directory.listFiles(
-                            (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png")
-                                    || name.toLowerCase().endsWith(".jpeg"));
-                    if (directoryFiles != null) {
-                        files.addAll(Arrays.asList(directoryFiles));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String filePath = rs.getString("filePath");
+                    File file = new File(filePath);
+
+                    // Optional: Add only image files with specific extensions
+                    if (file.exists() && (filePath.toLowerCase().endsWith(".jpg") ||
+                            filePath.toLowerCase().endsWith(".png") ||
+                            filePath.toLowerCase().endsWith(".jpeg"))) {
+                        files.add(file);
                     }
                 }
             }
         }
+
         return files;
     }
 
-    private void showIMagesInResClasses(VBox h, File imageFile ,int r) throws FileNotFoundException {
+    private void showIMagesInResClasses(VBox h, File imageFile, int r) throws FileNotFoundException {
 
         Image image = new Image(new FileInputStream(imageFile));
         String imagePath = imageFile.getAbsolutePath();
@@ -164,14 +180,19 @@ public class classification extends Application {
         imageView.setFitHeight(40);
         HBox b = new HBox();
         Label l = new Label("Classified as: " + CLASSIFICATIONS[r]);
-        b.getChildren().addAll(imageView,l);
+        b.getChildren().addAll(imageView, l);
         h.getChildren().add(b);
         b.getStyleClass().add("res-class-area");
     }
 
     private void showIMagesInClasses() throws FileNotFoundException {
         for (int j = 0; j < CLASSIFICATIONS.length; j++) {
-            List<File> files = getFilesForClassification(CLASSIFICATIONS[j]);
+            List<File> files = null;
+            try (Connection conn = connectToDB()) {
+                files = getFilesForClassification(CLASSIFICATIONS[j], conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             displayImagesFromDirectory(files, j);
         }
     }
@@ -194,6 +215,7 @@ public class classification extends Application {
     }
 
     private void saveFileToProjectFolder(File originalFile, String dir) throws IOException {
+
         File directory = new File(IMAGE_DIRECTORY + "/" + dir);
 
         if (!directory.exists()) {
@@ -201,16 +223,82 @@ public class classification extends Application {
         }
 
         File destFile = new File(directory, originalFile.getName());
-        try (FileInputStream inputStream = new FileInputStream(originalFile);
-                FileOutputStream outputStream = new FileOutputStream(destFile)) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
+        copyImage(originalFile.getAbsolutePath(),destFile.getAbsolutePath());
+        try (Connection conn = connectToDB()) {
+            saveImagePathToDB(conn, destFile.getAbsolutePath());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        showIMagesInClasses();
 
+    }
+
+    public static void copyImage(String sourcePath, String destPath) throws IOException {
+        Files.copy(Paths.get(sourcePath), Paths.get(destPath),
+                StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private Connection connectToDB() {
+        try {
+            // First, connect to the MySQL server
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+            // Check if the database exists
+            ResultSet resultSet = conn.getMetaData().getCatalogs();
+            boolean databaseExists = false;
+
+            while (resultSet.next()) {
+                String existingDbName = resultSet.getString(1);
+                if (existingDbName.equals(DB_NAME)) {
+                    databaseExists = true;
+                    break;
+                }
+            }
+            resultSet.close();
+
+            // If database doesn't exist, create it
+            if (!databaseExists) {
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.executeUpdate("CREATE DATABASE " + DB_NAME);
+
+                    System.out.println("Database " + DB_NAME + " created successfully.");
+                }
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS " + DB_NAME + "." + IMAGE_DIRECTORY + " (" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "filePath VARCHAR(255) NOT NULL)";
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(createTableSQL);
+                    System.out.println("Table 'images' verified/created.");
+                } catch (SQLException e) {
+                    System.err.println("Failed to create table: " + e.getMessage());
+                }
+            }
+
+            // Close the initial connection and reconnect to the specific database
+            conn.close();
+            conn = DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASSWORD);
+            return conn;
+        } catch (SQLException e) {
+            System.err.println("Database connection failed: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void saveImagePathToDB(Connection conn, String imagePath) {
+        if (conn == null) {
+            System.err.println("No connection to the database.");
+            return;
+        }
+
+        String insertSQL = "INSERT INTO images (filePath) VALUES (?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setString(1, imagePath);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Image path saved to database: " + imagePath);
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to insert image path: " + e.getMessage());
+        }
     }
 
     private void showImageDisplayPage(List<File> images) throws FileNotFoundException {

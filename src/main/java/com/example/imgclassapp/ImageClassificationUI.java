@@ -152,7 +152,7 @@ class ImageClassificationUI {
         return rightSection;
     }
 
-    private void showIMagesInClasses() throws FileNotFoundException {
+    public void showIMagesInClasses() throws FileNotFoundException {
         for (int j = 0; j < classifications.length; j++) {
             List<File> files = null;
             files = imageManager.getImagesForClassification(classifications[j]);
@@ -192,7 +192,7 @@ class ImageClassificationUI {
     }
 
     private void showImageDisplayPage(List<File> images) throws FileNotFoundException {
-        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images);
+        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images,imageManager);
         imageDisplayPage.start(new Stage());
     }
 }

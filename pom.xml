@@ -124,26 +124,11 @@
             <scope>test</scope>
         </dependency>
 
-<!--        ai -->
-        <!-- DeepLearning4J Dependencies -->
         <dependency>
-            <groupId>org.deeplearning4j</groupId>
-            <artifactId>deeplearning4j-zoo</artifactId>
-            <version>1.0.0-M2.1</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
-        <dependency>
-            <groupId>org.nd4j</groupId>
-            <artifactId>nd4j-native-platform</artifactId>
-            <version>1.0.0-M2.1</version>
-        </dependency>
-
-        <!-- JavaFX Dependencies -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>

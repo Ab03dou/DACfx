@@ -1012,7 +1012,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="292" parent="1" name="dacBD">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-12-12.19:47:28</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-12-12.21:17:57</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="293" parent="1" name="enseignementbd">
@@ -1069,7 +1069,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <column id="307" parent="306" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>2</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1087,7 +1087,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <column id="310" parent="306" name="confidence">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>varchar(40)|0s</StoredType>
+      <StoredType>decimal(4,2 digit)|0s</StoredType>
     </column>
     <index id="311" parent="306" name="PRIMARY">
       <ColNames>id</ColNames>

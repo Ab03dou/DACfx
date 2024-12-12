@@ -1,7 +1,6 @@
 package com.example.imgclassapp.UI;
 
-import com.example.imgclassapp.controler.ImageManager;
-import com.example.imgclassapp.controler.PythonScriptExecutor;
+import com.example.imgclassapp.controler.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -80,49 +79,16 @@ public class ImageClassificationUI {
         s.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         s.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Image Files");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-
         addButton.setOnAction(event -> {
-            List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
-            if (files != null) {
-                handleFileUpload(files, resVBOX);
-            }
+            LeftSectionsControler l = new LeftSectionsControler(imageManager,classifications,classesArea);
+            l.loadImage(primaryStage,resVBOX);
         });
-
 
         uploadArea.getChildren().addAll(uploadLabel, subLabel, addButton);
         leftSection.getChildren().addAll(uploadArea, s);
 
         return leftSection;
     }
-
-    private void handleFileUpload(List<File> files, VBox resVBOX) {
-        for (File file : files) {
-            try {
-                String className = "";
-                double confidence = 0;
-                try {
-                    String scriptPath = "src/main/resources/aiModel/imageClassification.py";
-                    String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
-                    String[] parts = result.split(" ");
-                    className = parts[0];
-                    confidence = Double.parseDouble(parts[1]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // Handle error appropriately in your UI
-                }
-                imageManager.saveFileToProjectFolder(file, className, confidence);
-                showIMagesInResClasses(resVBOX, file, 1);
-                showIMagesInClasses();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private VBox createRightSection() throws FileNotFoundException {
         // Create right section with classification areas
         // Similar to original implementation
@@ -133,6 +99,8 @@ public class ImageClassificationUI {
         classesArea.getStyleClass().add("classes-area");
 
         classifications = imageManager.getClassesNames();
+        RightSectionsControler r = new RightSectionsControler(imageManager,classesArea);
+
         if (classifications.size() != 0) {
             for (int i = 0; i < classifications.size(); i++) {
                 GridPane classCn = new GridPane(); // skyBlue sghira
@@ -151,62 +119,17 @@ public class ImageClassificationUI {
                 final int index = i;
                 contactClassCn.setOnMouseClicked(event -> {
                     try {
-                        showImageDisplayPage(imageManager.getImagesForClassification(classifications.get(index)));
+                        r.showImageDisplayPage(imageManager.getImagesForClassification(classifications.get(index)));
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 });
             }
-            showIMagesInClasses();
+            r.showIMagesInClasses();
         }
 
         rightSection.getChildren().addAll(classesArea);
         return rightSection;
     }
 
-    public void showIMagesInClasses() throws FileNotFoundException {
-        classifications = imageManager.getClassesNames();
-        for (int j = 0; j < classifications.size(); j++) {
-            List<File> files = null;
-            files = imageManager.getImagesForClassification(classifications.get(j));
-            displayImagesFromDirectory(files, j);
-        }
-    }
-
-    private void showIMagesInResClasses(VBox h, File imageFile, int r) throws FileNotFoundException {
-
-        classifications = imageManager.getClassesNames();
-        Image image = new Image(new FileInputStream(imageFile));
-        String imagePath = imageFile.getAbsolutePath();
-        CustomImageView imageView = new CustomImageView(image, imagePath);
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
-        HBox b = new HBox();
-        Label l = new Label("Classified as: " + classifications.get(r));
-        b.getChildren().addAll(imageView, l);
-        h.getChildren().add(b);
-        b.getStyleClass().add("res-class-area");
-    }
-
-    private void displayImagesFromDirectory(List<File> files, int classificationIndex) throws FileNotFoundException {
-
-        if (files != null && files.size() > 0) {
-            for (int i = 0; i < Math.min(files.size(), 4); i++) {
-                File imageFile = files.get(i);
-                Image image = new Image(new FileInputStream(imageFile));
-                String imagePath = imageFile.getAbsolutePath();
-                CustomImageView imageView = new CustomImageView(image, imagePath);
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
-                VBox vBox = (VBox) classesArea.getChildren().get(classificationIndex);
-                GridPane classCn = (GridPane) vBox.getChildren().get(0);
-                classCn.add(imageView, i % 2, i / 2);
-            }
-        }
-    }
-
-    private void showImageDisplayPage(List<File> images) throws FileNotFoundException {
-        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images, imageManager);
-        imageDisplayPage.start(new Stage());
-    }
 }

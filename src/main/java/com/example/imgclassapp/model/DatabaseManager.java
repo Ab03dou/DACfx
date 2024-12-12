@@ -39,9 +39,9 @@ public class DatabaseManager {
                 }
                 String createTableSQL = "CREATE TABLE IF NOT EXISTS " + DB_NAME + "." + IMAGE_DIRECTORY + " (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "filePath VARCHAR(255) NOT NULL, " +
+                        "filePath VARCHAR(255) NOT NULL UNIQUE, " +
                         "className VARCHAR(40) NOT NULL, " +
-                        "confidence VARCHAR(40) NOT NULL)";
+                        "confidence DECIMAL(4, 2) NOT NULL)";
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute(createTableSQL);
                     System.out.println("Table 'images' verified/created.");
@@ -67,7 +67,7 @@ public class DatabaseManager {
             return;
         }
 
-        String insertSQL = "INSERT INTO images (filePath) VALUES (?,?,?)";
+        String insertSQL = "INSERT IGNORE INTO images (filePath, className, confidence) VALUES (?,?,?)";
         try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, imagePath);
             pstmt.setString(2, classification);

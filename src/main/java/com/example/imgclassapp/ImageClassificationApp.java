@@ -2,7 +2,6 @@ package com.example.imgclassapp;
 
 import com.example.imgclassapp.UI.ImageClassificationUI;
 import com.example.imgclassapp.controler.ImageManager;
-import com.example.imgclassapp.controler.PythonScriptExecutor;
 import com.example.imgclassapp.model.DatabaseManager;
 import javafx.application.Application;
 import javafx.stage.Stage;

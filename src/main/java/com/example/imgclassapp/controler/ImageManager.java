@@ -1,4 +1,6 @@
-package com.example.imgclassapp;
+package com.example.imgclassapp.controler;
+
+import com.example.imgclassapp.model.DatabaseManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class ImageManager {
         this.dbManager = dbManager;
     }
 
-    public void saveFileToProjectFolder(File originalFile, String classification) throws IOException {
+    public void saveFileToProjectFolder(File originalFile, String classification,double confidence) throws IOException {
         File directory = new File(IMAGE_DIRECTORY + "/" + classification);
 
         if (!directory.exists()) {
@@ -29,7 +31,7 @@ public class ImageManager {
         copyImage(originalFile.getAbsolutePath(), destFile.getAbsolutePath());
 
         try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            dbManager.saveImagePath(conn, destFile.getAbsolutePath());
+            dbManager.saveImagePath(conn, destFile.getAbsolutePath(),classification,confidence);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,6 +65,16 @@ public class ImageManager {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    public ArrayList<String> getClassesNames() {
+        try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
+            return dbManager.getClassesNamesDB(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+
     }
 }
 

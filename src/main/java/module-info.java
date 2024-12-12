@@ -17,4 +17,10 @@ module com.example.imgclassapp {
 
     opens com.example.imgclassapp to javafx.fxml;
     exports com.example.imgclassapp;
+    exports com.example.imgclassapp.controler;
+    opens com.example.imgclassapp.controler to javafx.fxml;
+    exports com.example.imgclassapp.UI;
+    opens com.example.imgclassapp.UI to javafx.fxml;
+    exports com.example.imgclassapp.model;
+    opens com.example.imgclassapp.model to javafx.fxml;
 }

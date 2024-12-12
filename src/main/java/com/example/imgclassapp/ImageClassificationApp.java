@@ -1,22 +1,24 @@
 package com.example.imgclassapp;
 
+import com.example.imgclassapp.UI.ImageClassificationUI;
+import com.example.imgclassapp.controler.ImageManager;
+import com.example.imgclassapp.controler.PythonScriptExecutor;
+import com.example.imgclassapp.model.DatabaseManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ImageClassificationApp extends Application {
-    private static final String[] CLASSIFICATIONS = {"All", "Document", "People", "Animals", "Nature", "Screenshot", "Other"};
     private ImageClassificationUI ui;
     private DatabaseManager dbManager;
     private ImageManager imageManager;
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
-
+    public void start(Stage primaryStage) throws IOException {
         dbManager = new DatabaseManager();
         imageManager = new ImageManager(dbManager);
-        ui = new ImageClassificationUI(primaryStage, CLASSIFICATIONS, imageManager);
+        ui = new ImageClassificationUI(primaryStage,imageManager);
 
         ui.setupUI();
     }

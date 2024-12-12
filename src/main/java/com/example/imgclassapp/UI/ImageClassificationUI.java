@@ -1,5 +1,7 @@
-package com.example.imgclassapp;
+package com.example.imgclassapp.UI;
 
+import com.example.imgclassapp.controler.ImageManager;
+import com.example.imgclassapp.controler.PythonScriptExecutor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,24 +14,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
-class ImageClassificationUI {
+public class ImageClassificationUI {
     private Stage primaryStage;
-    private String[] classifications;
+    private ArrayList<String> classifications;
     private ImageManager imageManager;
 
     private TilePane classesArea;
 
-    public ImageClassificationUI(Stage primaryStage, String[] classifications, ImageManager imageManager) {
+    public ImageClassificationUI(Stage primaryStage, ImageManager imageManager) {
         this.primaryStage = primaryStage;
-        this.classifications = classifications;
         this.imageManager = imageManager;
     }
 
@@ -105,7 +102,19 @@ class ImageClassificationUI {
     private void handleFileUpload(List<File> files, VBox resVBOX) {
         for (File file : files) {
             try {
-                imageManager.saveFileToProjectFolder(file, classifications[1]);
+                String className = "";
+                double confidence = 0;
+                try {
+                    String scriptPath = "src/main/resources/aiModel/imageClassification.py";
+                    String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
+                    String[] parts = result.split(" ");
+                    className = parts[0];
+                    confidence = Double.parseDouble(parts[1]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // Handle error appropriately in your UI
+                }
+                imageManager.saveFileToProjectFolder(file, className, confidence);
                 showIMagesInResClasses(resVBOX, file, 1);
                 showIMagesInClasses();
             } catch (IOException e) {
@@ -123,52 +132,57 @@ class ImageClassificationUI {
         classesArea = new TilePane(); // blue kbira
         classesArea.getStyleClass().add("classes-area");
 
-        for (int i = 0; i < classifications.length; i++) {
-            GridPane classCn = new GridPane(); // skyBlue sghira
-            classCn.getStyleClass().add("classCn-area");
-            classCn.setHgap(10);
-            classCn.setVgap(10);
+        classifications = imageManager.getClassesNames();
+        if (classifications.size() != 0) {
+            for (int i = 0; i < classifications.size(); i++) {
+                GridPane classCn = new GridPane(); // skyBlue sghira
+                classCn.getStyleClass().add("classCn-area");
+                classCn.setHgap(10);
+                classCn.setVgap(10);
 
-            Label classCnName = new Label(classifications[i]);
-            classCnName.getStyleClass().add("image-name-label");
+                Label classCnName = new Label(classifications.get(i));
+                classCnName.getStyleClass().add("image-name-label");
 
-            VBox contactClassCn = new VBox(5); // 5 is the spacing between elements
-            contactClassCn.getChildren().addAll(classCn, classCnName);
+                VBox contactClassCn = new VBox(5); // 5 is the spacing between elements
+                contactClassCn.getChildren().addAll(classCn, classCnName);
 
-            classesArea.getChildren().add(contactClassCn);
+                classesArea.getChildren().add(contactClassCn);
 
-            final int index = i;
-            contactClassCn.setOnMouseClicked(event -> {
-                try {
-                    showImageDisplayPage(imageManager.getImagesForClassification(classifications[index]));
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+                final int index = i;
+                contactClassCn.setOnMouseClicked(event -> {
+                    try {
+                        showImageDisplayPage(imageManager.getImagesForClassification(classifications.get(index)));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+            showIMagesInClasses();
         }
-        showIMagesInClasses();
 
         rightSection.getChildren().addAll(classesArea);
         return rightSection;
     }
 
     public void showIMagesInClasses() throws FileNotFoundException {
-        for (int j = 0; j < classifications.length; j++) {
+        classifications = imageManager.getClassesNames();
+        for (int j = 0; j < classifications.size(); j++) {
             List<File> files = null;
-            files = imageManager.getImagesForClassification(classifications[j]);
+            files = imageManager.getImagesForClassification(classifications.get(j));
             displayImagesFromDirectory(files, j);
         }
     }
 
     private void showIMagesInResClasses(VBox h, File imageFile, int r) throws FileNotFoundException {
 
+        classifications = imageManager.getClassesNames();
         Image image = new Image(new FileInputStream(imageFile));
         String imagePath = imageFile.getAbsolutePath();
         CustomImageView imageView = new CustomImageView(image, imagePath);
         imageView.setFitWidth(40);
         imageView.setFitHeight(40);
         HBox b = new HBox();
-        Label l = new Label("Classified as: " + classifications[r]);
+        Label l = new Label("Classified as: " + classifications.get(r));
         b.getChildren().addAll(imageView, l);
         h.getChildren().add(b);
         b.getStyleClass().add("res-class-area");
@@ -192,7 +206,7 @@ class ImageClassificationUI {
     }
 
     private void showImageDisplayPage(List<File> images) throws FileNotFoundException {
-        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images,imageManager);
+        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images, imageManager);
         imageDisplayPage.start(new Stage());
     }
 }

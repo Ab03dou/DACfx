@@ -1,4 +1,4 @@
-package com.example.imgclassapp;
+package com.example.imgclassapp.model;
 
 import java.io.File;
 import java.sql.*;
@@ -39,7 +39,9 @@ public class DatabaseManager {
                 }
                 String createTableSQL = "CREATE TABLE IF NOT EXISTS " + DB_NAME + "." + IMAGE_DIRECTORY + " (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "filePath VARCHAR(255) NOT NULL)";
+                        "filePath VARCHAR(255) NOT NULL, " +
+                        "className VARCHAR(40) NOT NULL, " +
+                        "confidence VARCHAR(40) NOT NULL)";
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute(createTableSQL);
                     System.out.println("Table 'images' verified/created.");
@@ -59,15 +61,17 @@ public class DatabaseManager {
     }
 
 
-    public void saveImagePath(Connection conn, String imagePath) {
+    public void saveImagePath(Connection conn, String imagePath,String classification,double confidence) {
         if (conn == null) {
             System.err.println("No connection to the database.");
             return;
         }
 
-        String insertSQL = "INSERT INTO images (filePath) VALUES (?)";
+        String insertSQL = "INSERT INTO images (filePath) VALUES (?,?,?)";
         try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, imagePath);
+            pstmt.setString(2, classification);
+            pstmt.setDouble(3, confidence);
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Image path saved to database: " + imagePath);
@@ -120,5 +124,22 @@ public class DatabaseManager {
         }
 
         return files;
+    }
+
+    public ArrayList<String> getClassesNamesDB(Connection conn) {
+        String getClasses = "SELECT className FROM images";
+        ArrayList<String> classNames = new ArrayList<>();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(getClasses);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                classNames.add(rs.getString("className"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve class names: " + e.getMessage());
+        }
+
+        return classNames;
     }
 }

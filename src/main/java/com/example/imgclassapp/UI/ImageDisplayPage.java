@@ -44,16 +44,9 @@ public class ImageDisplayPage extends Application {
             imageView.setFitHeight(200);
             imageView.setOnMouseClicked(e -> showLargeImage(imageFile));
 
-            Button deleteButton = new Button("x");
-
-            VBox imgC = new VBox(imageView, deleteButton);
+            VBox imgC = new VBox(imageView);
 
             tilePane.getChildren().add(imgC);
-
-            deleteButton.setOnAction(event -> {
-                imgM.deleteFileFromProjectFolder(imageFile);
-                tilePane.getChildren().remove(imgC);
-            });
         }
 
 

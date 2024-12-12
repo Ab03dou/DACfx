@@ -37,22 +37,6 @@ public class ImageManager {
         }
     }
 
-    public void deleteFileFromProjectFolder(File file) {
-
-        try {
-            Files.delete(file.toPath());
-            System.out.println("Image file deleted: " + file.getAbsolutePath());
-        } catch (IOException e) {
-            System.err.println("Failed to delete image file: " + e.getMessage());
-        }
-
-        try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            dbManager.deleteImagePath(conn,file);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void copyImage(String sourcePath, String destPath) throws IOException {
         Files.copy(Paths.get(sourcePath), Paths.get(destPath),
                 StandardCopyOption.REPLACE_EXISTING);

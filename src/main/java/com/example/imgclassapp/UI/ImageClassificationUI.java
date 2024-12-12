@@ -24,15 +24,20 @@ public class ImageClassificationUI {
 
     private TilePane classesArea;
 
+    private static VBox rightSection;
+
     public ImageClassificationUI(Stage primaryStage, ImageManager imageManager) {
         this.primaryStage = primaryStage;
         this.imageManager = imageManager;
     }
 
+    public static void setRightSection() {
+    }
+
     public void setupUI() throws FileNotFoundException {
         HBox root = createRootLayout();
         VBox leftSection = createLeftSection();
-        VBox rightSection = createRightSection();
+        rightSection = createRightSection();
 
         root.getChildren().addAll(leftSection, rightSection);
 
@@ -130,6 +135,11 @@ public class ImageClassificationUI {
 
         rightSection.getChildren().addAll(classesArea);
         return rightSection;
+    }
+
+    public static void setRightSection(TilePane tp) {
+        ImageClassificationUI.rightSection.getChildren().clear();
+        ImageClassificationUI.rightSection.getChildren().add(tp);
     }
 
 }

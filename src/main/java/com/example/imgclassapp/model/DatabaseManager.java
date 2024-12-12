@@ -81,21 +81,6 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteImagePath(Connection conn,File file) {
-
-        // Remove the image path from the database
-        String deleteSQL = "DELETE FROM images WHERE filePath = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
-            pstmt.setString(1, file.getAbsolutePath());
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Image path deleted from database: " + file.getAbsolutePath());
-            }
-        } catch (SQLException e) {
-            System.err.println("Failed to delete image path from database: " + e.getMessage());
-        }
-    }
-
     public List<File> getFilesForClassification(String classification, Connection connection) throws SQLException {
         List<File> files = new ArrayList<>();
 

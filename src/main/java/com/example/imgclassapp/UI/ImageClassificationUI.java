@@ -19,12 +19,13 @@ import java.util.List;
 
 public class ImageClassificationUI {
     private Stage primaryStage;
-    private ArrayList<String> classifications;
+    private ArrayList<String[]> classifications;
     private ImageManager imageManager;
 
     private TilePane classesArea;
 
     private static VBox rightSection;
+    private static VBox resVBOX ;
 
     public ImageClassificationUI(Stage primaryStage, ImageManager imageManager) {
         this.primaryStage = primaryStage;
@@ -76,9 +77,10 @@ public class ImageClassificationUI {
         Button addButton = new Button("Choose Files");
         addButton.getStyleClass().add("add-button");
 
-        VBox resVBOX = new VBox();
+        resVBOX = new VBox();
         resVBOX.getStyleClass().add("res-VBOX");
         ScrollPane s = new ScrollPane(resVBOX);
+
         s.getStyleClass().add("res-SCROLL");
 
         s.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -113,7 +115,7 @@ public class ImageClassificationUI {
                 classCn.setHgap(10);
                 classCn.setVgap(10);
 
-                Label classCnName = new Label(classifications.get(i));
+                Label classCnName = new Label(classifications.get(i)[0]);
                 classCnName.getStyleClass().add("image-name-label");
 
                 VBox contactClassCn = new VBox(5); // 5 is the spacing between elements
@@ -124,7 +126,7 @@ public class ImageClassificationUI {
                 final int index = i;
                 contactClassCn.setOnMouseClicked(event -> {
                     try {
-                        r.showImageDisplayPage(imageManager.getImagesForClassification(classifications.get(index)));
+                        r.showImageDisplayPage(imageManager.getImagesForClassification(classifications.get(index)[0]));
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -141,5 +143,4 @@ public class ImageClassificationUI {
         ImageClassificationUI.rightSection.getChildren().clear();
         ImageClassificationUI.rightSection.getChildren().add(tp);
     }
-
 }

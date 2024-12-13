@@ -16,10 +16,10 @@ import java.util.List;
 
 public class Controler {
     private ImageManager imageManager;
-    private ArrayList<String> classifications;
+    private ArrayList<String[]> classifications;
     private TilePane classesArea;
 
-    public Controler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
+    public Controler(ImageManager imageManager, ArrayList<String[]> classifications, TilePane classesArea) {
         this.imageManager = imageManager;
         this.classesArea = classesArea;
         this.classifications = classifications;
@@ -34,12 +34,12 @@ public class Controler {
         classifications = imageManager.getClassesNames();
         for (int j = 0; j < classifications.size(); j++) {
             List<File> files = null;
-            files = imageManager.getImagesForClassification(classifications.get(j));
-            displayImagesFromDirectory(files, j, classifications.get(j));
+            files = imageManager.getImagesForClassification(classifications.get(j)[0]);
+            displayImagesFromDirectory(files, j, classifications, classifications.get(j)[0]);
         }
     }
 
-    private void displayImagesFromDirectory(List<File> files, int classificationIndex, String s) throws FileNotFoundException {
+    private void displayImagesFromDirectory(List<File> files, int classificationIndex, ArrayList<String[]> classifications, String s) throws FileNotFoundException {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < Math.min(files.size(), 4); i++) {
                 File imageFile = files.get(i);
@@ -48,8 +48,17 @@ public class Controler {
                 CustomImageView imageView = new CustomImageView(image, imagePath);
                 imageView.setFitWidth(40);
                 imageView.setFitHeight(40);
-                if (this.classesArea.getChildren().size() == classificationIndex)
-                    createChild(s);
+                if (this.classesArea.getChildren().size() == classificationIndex) {
+                    boolean check = true;
+                    for (int j = 0; j < classifications.size()-1; j++) {
+                        if (classifications.get(j)[0].equals(s)) {
+                            classificationIndex=j;
+                            check=false;
+                        }
+                    }
+
+                    if (check) createChild(s); //TODO: riglt mchkl
+                }
                 VBox vBox = (VBox) this.classesArea.getChildren().get(classificationIndex);
                 GridPane classCn = (GridPane) vBox.getChildren().get(0);
                 classCn.add(imageView, i % 2, i / 2);

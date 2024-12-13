@@ -111,20 +111,35 @@ public class DatabaseManager {
         return files;
     }
 
-    public ArrayList<String> getClassesNamesDB(Connection conn) {
-        String getClasses = "SELECT className FROM images";
-        ArrayList<String> classNames = new ArrayList<>();
+    public ArrayList<String[]> getClassesNamesDB(Connection conn) {
+        String getClasses = "SELECT DISTINCT className,confidence FROM images";
+        ArrayList<String[]> classList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(getClasses);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                classNames.add(rs.getString("className"));
+               String[] classRes = new String[2];
+                classRes[0] = rs.getString("className");
+
+                boolean exists = false;
+                for (String[] existing : classList) {
+                    if (existing[0].equals(classRes[0])) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists) {
+                    continue; // Skip duplicates
+                }
+                classRes[1] = rs.getString("confidence");
+                classList.add(classRes);
             }
         } catch (SQLException e) {
             System.err.println("Failed to retrieve class names: " + e.getMessage());
         }
 
-        return classNames;
+        return classList;
     }
 }

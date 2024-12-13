@@ -1,4 +1,4 @@
-module com.example.imgclassapp {
+module com.example.sortview {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -15,12 +15,12 @@ module com.example.imgclassapp {
     requires javafx.graphics;
     requires java.desktop;
 
-    opens com.example.imgclassapp to javafx.fxml;
-    exports com.example.imgclassapp;
-    exports com.example.imgclassapp.controler;
-    opens com.example.imgclassapp.controler to javafx.fxml;
-    exports com.example.imgclassapp.UI;
-    opens com.example.imgclassapp.UI to javafx.fxml;
-    exports com.example.imgclassapp.model;
-    opens com.example.imgclassapp.model to javafx.fxml;
+    opens com.example.sortview to javafx.fxml;
+    exports com.example.sortview;
+    exports com.example.sortview.controler;
+    opens com.example.sortview.controler to javafx.fxml;
+    exports com.example.sortview.UI;
+    opens com.example.sortview.UI to javafx.fxml;
+    exports com.example.sortview.model;
+    opens com.example.sortview.model to javafx.fxml;
 }

@@ -1,6 +1,6 @@
-package com.example.imgclassapp.controler;
+package com.example.sortview.controler;
 
-import com.example.imgclassapp.model.DatabaseManager;
+import com.example.sortview.model.DatabaseManager;
 
 import java.io.File;
 import java.io.IOException;

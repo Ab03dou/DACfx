@@ -1,6 +1,6 @@
-package com.example.imgclassapp.controler;
+package com.example.sortview.controler;
 
-import com.example.imgclassapp.UI.CustomImageView;
+import com.example.sortview.UI.CustomImageView;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;

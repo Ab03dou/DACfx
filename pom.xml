@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>ImgClassApp</artifactId>
+    <artifactId>SortView</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ImgClassApp</name>
 
@@ -137,7 +137,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.imgclassapp/com.example.imgclassapp.welcome</mainClass>
+                            <mainClass>com.example.imgclassapp/com.example.sortview.welcome</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

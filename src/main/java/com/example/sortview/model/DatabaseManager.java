@@ -1,4 +1,4 @@
-package com.example.imgclassapp.model;
+package com.example.sortview.model;
 
 import java.io.File;
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.util.List;
 public class DatabaseManager {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
-    private static final String DB_NAME = "dacBD";
+    private static final String DB_NAME = "sortview";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "0100mysql0445";
 

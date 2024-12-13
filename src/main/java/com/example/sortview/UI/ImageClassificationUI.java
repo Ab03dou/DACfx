@@ -1,6 +1,6 @@
-package com.example.imgclassapp.UI;
+package com.example.sortview.UI;
 
-import com.example.imgclassapp.controler.*;
+import com.example.sortview.controler.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,12 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ImageClassificationUI {
     private Stage primaryStage;
@@ -45,6 +43,8 @@ public class ImageClassificationUI {
         Scene scene = new Scene(root, 1380, 700);
         scene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
+        Image image = new Image("src/main/resources/logo/logo-icon.png");
+        primaryStage.getIcons().add(image);
         primaryStage.setTitle("Image Classification");
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(600);

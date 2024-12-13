@@ -1,8 +1,8 @@
-package com.example.imgclassapp;
+package com.example.sortview;
 
-import com.example.imgclassapp.UI.ImageClassificationUI;
-import com.example.imgclassapp.controler.ImageManager;
-import com.example.imgclassapp.model.DatabaseManager;
+import com.example.sortview.UI.ImageClassificationUI;
+import com.example.sortview.controler.ImageManager;
+import com.example.sortview.model.DatabaseManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

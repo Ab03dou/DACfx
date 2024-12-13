@@ -23,7 +23,7 @@ public class ImageClassificationUI {
     private TilePane classesArea;
 
     private static VBox rightSection;
-    private static VBox resVBOX ;
+    private static VBox resVBOX;
 
     public ImageClassificationUI(Stage primaryStage, ImageManager imageManager) {
         this.primaryStage = primaryStage;
@@ -43,7 +43,7 @@ public class ImageClassificationUI {
         Scene scene = new Scene(root, 1380, 700);
         scene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
-        Image image = new Image("src/main/resources/logo/logo-icon.png");
+        Image image = new Image(getClass().getResource("/logo/logo.png").toExternalForm());
         primaryStage.getIcons().add(image);
         primaryStage.setTitle("Image Classification");
         primaryStage.setMinWidth(800);
@@ -87,8 +87,8 @@ public class ImageClassificationUI {
         s.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         addButton.setOnAction(event -> {
-            LeftSectionsControler l = new LeftSectionsControler(imageManager,classifications,classesArea);
-            l.loadImage(primaryStage,resVBOX);
+            LeftSectionsControler l = new LeftSectionsControler(imageManager, classifications, classesArea);
+            l.loadImage(primaryStage, resVBOX);
         });
 
         uploadArea.getChildren().addAll(uploadLabel, subLabel, addButton);
@@ -96,6 +96,7 @@ public class ImageClassificationUI {
 
         return leftSection;
     }
+
     private VBox createRightSection() throws FileNotFoundException {
         // Create right section with classification areas
         // Similar to original implementation
@@ -106,7 +107,7 @@ public class ImageClassificationUI {
         classesArea.getStyleClass().add("classes-area");
 
         classifications = imageManager.getClassesNames();
-        RightSectionsControler r = new RightSectionsControler(imageManager,classesArea);
+        RightSectionsControler r = new RightSectionsControler(imageManager, classesArea);
 
         if (classifications.size() != 0) {
             for (int i = 0; i < classifications.size(); i++) {

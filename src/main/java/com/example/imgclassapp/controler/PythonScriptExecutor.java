@@ -11,15 +11,15 @@ public class PythonScriptExecutor {
 
     public static String executePythonScript(String scriptPath, String... args) {
 
-        String VENV_PYTHON;
+        String pythonCommand;
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            VENV_PYTHON = "C:\\Users\\"+ System.getProperty("user.home") + "\\AppData\\Local\\Programs\\Python\\Python310\\python.exe";  // for Windows
+            pythonCommand = "python";  // for Windows
         } else {
-            VENV_PYTHON = System.getProperty("user.home") + "/su/bin/python";  // for Linux/Mac
+            pythonCommand = System.getProperty("user.home") + "/su/bin/python";  // for Linux/Mac
         }
         try {
             List<String> commands = new ArrayList<>();
-            commands.add(VENV_PYTHON);
+            commands.add(pythonCommand);
             commands.add(scriptPath);
             commands.addAll(Arrays.asList(args));
 

@@ -16,10 +16,10 @@ import java.util.List;
 
 public class Controler {
     private ImageManager imageManager;
-    private ArrayList<String[]> classifications;
+    private ArrayList<String> classifications;
     private TilePane classesArea;
 
-    public Controler(ImageManager imageManager, ArrayList<String[]> classifications, TilePane classesArea) {
+    public Controler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
         this.imageManager = imageManager;
         this.classesArea = classesArea;
         this.classifications = classifications;
@@ -34,34 +34,35 @@ public class Controler {
         classifications = imageManager.getClassesNames();
         for (int j = 0; j < classifications.size(); j++) {
             List<File> files = null;
-            files = imageManager.getImagesForClassification(classifications.get(j)[0]);
-            displayImagesFromDirectory(files, j, classifications, classifications.get(j)[0]);
+            files = imageManager.getImagesForClassification(classifications.get(j));
+            displayImagesFromDirectory(files, j, classifications, classifications.get(j));
         }
     }
 
-    private void displayImagesFromDirectory(List<File> files, int classificationIndex, ArrayList<String[]> classifications, String s) throws FileNotFoundException {
+    private void displayImagesFromDirectory(List<File> files, int classificationIndex, ArrayList<String> classifications, String s) throws FileNotFoundException {
         if (files != null && files.size() > 0) {
             for (int i = 0; i < Math.min(files.size(), 4); i++) {
                 File imageFile = files.get(i);
                 Image image = new Image(new FileInputStream(imageFile));
                 String imagePath = imageFile.getAbsolutePath();
                 CustomImageView imageView = new CustomImageView(image, imagePath);
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
+                imageView.setFitWidth(60);
+                imageView.setFitHeight(60);
                 if (this.classesArea.getChildren().size() == classificationIndex) {
                     boolean check = true;
                     for (int j = 0; j < classifications.size()-1; j++) {
-                        if (classifications.get(j)[0].equals(s)) {
+                        if (classifications.get(j).equals(s)) {
                             classificationIndex=j;
                             check=false;
                         }
                     }
 
-                    if (check) createChild(s); //TODO: riglt mchkl
+                    if (check) createChild(s); //TODO: riglt mchkl jat gholta ki wla classes sorted bl name mn9droch ndiro bl index haka
+                    //7al mo9tarah dir table hat fih classes li kaynin w9arn
                 }
                 VBox vBox = (VBox) this.classesArea.getChildren().get(classificationIndex);
-                GridPane classCn = (GridPane) vBox.getChildren().get(0);
-                classCn.add(imageView, i % 2, i / 2);
+                GridPane classAlbum = (GridPane) vBox.getChildren().get(0);
+                classAlbum.add(imageView, i % 2, i / 2);
             }
         }
     }
@@ -69,20 +70,22 @@ public class Controler {
     private void createChild(String s) {
         RightSectionsControler r = new RightSectionsControler(imageManager, classesArea);
 
-        GridPane classCn = new GridPane(); // skyBlue sghira
-        classCn.getStyleClass().add("classCn-area");
-        classCn.setHgap(10);
-        classCn.setVgap(10);
+        GridPane classAlbum = new GridPane();
+        classAlbum.getStyleClass().add("classAlbum-area");
+        classAlbum.setHgap(20);
+        classAlbum.setVgap(20);
+        classAlbum.setPrefSize(170, 170);
 
-        Label classCnName = new Label(s);
-        classCnName.getStyleClass().add("image-name-label");
 
-        VBox contactClassCn = new VBox(5); // 5 is the spacing between elements
-        contactClassCn.getChildren().addAll(classCn, classCnName);
+        Label classAlbumName = new Label(s);
+        classAlbumName.getStyleClass().add("classAlbumName-label");
 
-        classesArea.getChildren().add(contactClassCn);
+        VBox contactClassAlbum = new VBox(5); // 5 is the spacing between elements
+        contactClassAlbum.getChildren().addAll(classAlbum, classAlbumName);
 
-        contactClassCn.setOnMouseClicked(event -> {
+        classesArea.getChildren().add(contactClassAlbum);
+
+        contactClassAlbum.setOnMouseClicked(event -> {
             try {
                 r.showImageDisplayPage(imageManager.getImagesForClassification(s));
             } catch (FileNotFoundException e) {
@@ -90,6 +93,5 @@ public class Controler {
             }
         });
         ImageClassificationUI.setRightSection(classesArea);
-
     }
 }

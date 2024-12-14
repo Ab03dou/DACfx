@@ -1,6 +1,6 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.ImageDisplayPage;
+import com.example.sortview.UI.ClassesAlbum;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
@@ -19,7 +19,7 @@ public class RightSectionsControler extends Controler {
     }
 
     public void showImageDisplayPage(List<File> images) throws FileNotFoundException {
-        ImageDisplayPage imageDisplayPage = new ImageDisplayPage(images, imageManager);
+        ClassesAlbum imageDisplayPage = new ClassesAlbum(images, imageManager);
         imageDisplayPage.start(new Stage());
     }
 }

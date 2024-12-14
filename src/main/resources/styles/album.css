@@ -1,0 +1,12 @@
+.album {
+    -fx-padding: 30px;
+    -fx-hgap: 20px;
+    -fx-vgap: 50px;
+    -fx-background-color: #3498db;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.root-SCROLL{
+    -fx-padding: 30px;
+}

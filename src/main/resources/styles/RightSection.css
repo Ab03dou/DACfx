@@ -1,0 +1,40 @@
+/* right section for classifications */
+.right-section {
+    -fx-pref-width: 700px;
+    -fx-padding: 30px;
+    -fx-background-color: #4aa3fa;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.scroll-pane-section {
+    -fx-background-color: #4aa3fa;
+}
+
+.classes-area {
+    -fx-hgap: 50px;
+    -fx-vgap: 50px;
+    -fx-background-color: #4aa3fa;
+    -fx-padding: 10px;
+}
+.classAlbum-area {
+    -fx-background-color: #AED6F1;
+    -fx-alignment: center;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+    -fx-cursor: hand;
+    -fx-padding: 10px;
+}
+
+/* Hover effect for content areas */
+.classAlbum-area:hover {
+    -fx-background-color: #a173fa;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+
+.classAlbumName-label {
+    -fx-text-fill: #98d4f2;
+    -fx-font-weight: bold;
+}
+

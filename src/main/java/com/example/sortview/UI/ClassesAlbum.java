@@ -14,12 +14,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.List;
 
-public class ImageDisplayPage extends Application {
+public class ClassesAlbum extends Application {
 
     private List<File> images;
     private ImageManager imgM;
 
-    public ImageDisplayPage(List<File> images, ImageManager imgM) {
+    public ClassesAlbum(List<File> images, ImageManager imgM) {
         this.images = images;
         this.imgM = imgM;
     }
@@ -27,13 +27,13 @@ public class ImageDisplayPage extends Application {
     @Override
     public void start(Stage stage) {
 
-        TilePane tilePane = new TilePane();
-        tilePane.setHgap(10);
-        tilePane.setVgap(10);
-        tilePane.setPrefWidth(700);
-        tilePane.setPrefHeight(700);
+        TilePane album = new TilePane();
+        album.setHgap(10);
+        album.setVgap(10);
+        album.setPrefWidth(700);
+        album.setPrefHeight(700);
 
-        tilePane.getStyleClass().add("gallry");
+        album.getStyleClass().add("album");
 
         for (int i = 0; i < images.size(); i++) {
             File imageFile = images.get(i);
@@ -45,18 +45,19 @@ public class ImageDisplayPage extends Application {
 
             VBox imgC = new VBox(imageView);
 
-            tilePane.getChildren().add(imgC);
+            album.getChildren().add(imgC);
         }
 
 
-        ScrollPane root = new ScrollPane(tilePane);
+        ScrollPane root = new ScrollPane(album);
         root.setFitToWidth(true);
         root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        root.getStyleClass().add("root");
+        root.getStyleClass().add("root-SCROLL");
 
         Scene imageScene = new Scene(root, 800, 600);
-        imageScene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
+        imageScene.getStylesheets().add(getClass().getResource("/styles/album.css").toExternalForm());
+
 
         stage.setTitle("Images");
         stage.setScene(imageScene);

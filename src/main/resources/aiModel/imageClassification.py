@@ -8,8 +8,6 @@ import sys
 
 def main(image_path = sys.argv[1]):
     try:
-        # Validate and expand the path
-        image_path = os.path.expanduser(image_path)
         if not os.path.isfile(image_path):
             print(f"File not found: {image_path}")
             return None

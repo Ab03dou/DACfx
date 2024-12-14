@@ -41,7 +41,7 @@ public class DatabaseManager {
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "filePath VARCHAR(255) NOT NULL UNIQUE, " +
                         "className VARCHAR(40) NOT NULL, " +
-                        "confidence DECIMAL(4, 2) NOT NULL)";
+                        "confidence DOUBLE NOT NULL)";
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute(createTableSQL);
                     System.out.println("Table 'images' verified/created.");
@@ -61,7 +61,7 @@ public class DatabaseManager {
     }
 
 
-    public void saveImagePath(Connection conn, String imagePath,String classification,double confidence) {
+    public void saveImagePath(Connection conn, String imagePath, String classification, double confidence) {
         if (conn == null) {
             System.err.println("No connection to the database.");
             return;
@@ -74,7 +74,7 @@ public class DatabaseManager {
             pstmt.setDouble(3, confidence);
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Image path saved to database: " + imagePath);
+                System.out.println("saved to database image:" + imagePath + " confidence: " + confidence);
             }
         } catch (SQLException e) {
             System.err.println("Failed to insert image path: " + e.getMessage());
@@ -85,8 +85,8 @@ public class DatabaseManager {
         List<File> files = new ArrayList<>();
 
         String query = classification.equals("All")
-                ? "SELECT filePath FROM images"
-                : "SELECT filePath FROM images WHERE filePath LIKE ?";
+                ? "SELECT filePath FROM images ORDER BY confidence DESC"
+                : "SELECT filePath,confidence FROM images WHERE filePath LIKE ? ORDER BY confidence DESC";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             if (!classification.equals("All")) {
@@ -111,30 +111,15 @@ public class DatabaseManager {
         return files;
     }
 
-    public ArrayList<String[]> getClassesNamesDB(Connection conn) {
-        String getClasses = "SELECT DISTINCT className,confidence FROM images";
-        ArrayList<String[]> classList = new ArrayList<>();
+    public ArrayList<String> getClassesNamesDB(Connection conn) {
+        String getClasses = "SELECT DISTINCT className FROM images ORDER BY className ASC";
+        ArrayList<String> classList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(getClasses);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-               String[] classRes = new String[2];
-                classRes[0] = rs.getString("className");
-
-                boolean exists = false;
-                for (String[] existing : classList) {
-                    if (existing[0].equals(classRes[0])) {
-                        exists = true;
-                        break;
-                    }
-                }
-
-                if (exists) {
-                    continue; // Skip duplicates
-                }
-                classRes[1] = rs.getString("confidence");
-                classList.add(classRes);
+                classList.add(rs.getString("className"));
             }
         } catch (SQLException e) {
             System.err.println("Failed to retrieve class names: " + e.getMessage());

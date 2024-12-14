@@ -14,6 +14,7 @@ module com.example.sortview {
     requires java.sql;
     requires javafx.graphics;
     requires java.desktop;
+    requires metadata.extractor;
 
     opens com.example.sortview to javafx.fxml;
     exports com.example.sortview;

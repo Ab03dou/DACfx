@@ -20,7 +20,7 @@ public class ImageManager {
         this.dbManager = dbManager;
     }
 
-    public void saveFileToProjectFolder(File originalFile, String[] classification,double confidence) throws IOException {
+    public void saveFileToProjectFolder(File originalFile, String[] classification) throws IOException {
         File directory = new File(IMAGE_DIRECTORY + "/" + classification[0]);
 
         if (!directory.exists()) {
@@ -28,10 +28,13 @@ public class ImageManager {
         }
 
         File destFile = new File(directory, originalFile.getName());
+        if (destFile.exists()) {
+            return;
+        }
         copyImage(originalFile.getAbsolutePath(), destFile.getAbsolutePath());
 
         try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            dbManager.saveImagePath(conn, destFile.getAbsolutePath(),classification[0],confidence);
+            dbManager.saveImagePath(conn, destFile.getAbsolutePath(),classification[0],Double.parseDouble(classification[1]));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,9 +54,12 @@ public class ImageManager {
         }
     }
 
-    public ArrayList<String[]> getClassesNames() {
+    public ArrayList<String> getClassesNames() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("All");
         try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            return dbManager.getClassesNamesDB(conn);
+            list.addAll(dbManager.getClassesNamesDB(conn));
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();

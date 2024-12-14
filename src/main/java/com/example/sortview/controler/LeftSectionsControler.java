@@ -6,12 +6,15 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,50 +22,58 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeftSectionsControler extends Controler{
+public class LeftSectionsControler extends Controler {
 
     private ImageManager imageManager;
-    private ArrayList<String[]> classifications;
+    private ArrayList<String> classifications;
     private TilePane classesArea;
 
-    public LeftSectionsControler(ImageManager imageManager, ArrayList<String[]> classifications,TilePane classesArea) {
-        super(imageManager,classifications,classesArea);
+    public LeftSectionsControler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
+        super(imageManager, classifications, classesArea);
         this.imageManager = imageManager;
         this.classifications = classifications;
-        this.classesArea=classesArea;
+        this.classesArea = classesArea;
     }
 
-    public void loadImage(Stage primaryStage, VBox resVBOX) {
+    public void loadImage(Stage primaryStage, VBox resVBOX, ImageView imageView) throws Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image Files");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+
+
         List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
         if (files != null) {
             Task<Void> uploadTask = new Task<>() {
                 @Override
-                protected Void call() {
-                    handleFileUpload(files, resVBOX);
+                protected Void call() throws Exception {
+                    ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+                    if (errorHandlingControler.checkImages(files))
+                        handleFileUpload(files, resVBOX, imageView);
                     return null;
+
                 }
             };
 
             new Thread(uploadTask).start();
+        } else {
+            ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+            errorHandlingControler.createErrorMsgGUI("you didn't select any images for classify pleas try again.");
         }
     }
 
-    private void handleFileUpload(List<File> files, VBox resVBOX) {
+    private void handleFileUpload(List<File> files, VBox resVBOX, ImageView imageView) {
         for (File file : files) {
             try {
-
                 ProgressBar bar = new ProgressBar();
+                bar.setPrefWidth(396);
+                bar.setPrefHeight(5);
                 Platform.runLater(() -> {
-                    bar.setProgress(-1.0f);
-                    resVBOX.getChildren().add(0,bar);
+                    resVBOX.getChildren().remove(imageView);
+                    resVBOX.getChildren().add(0, bar);
                 });
 
                 String[] classRes = {};
-                double confidence = 0;
                 try {
                     String scriptPath = "src/main/resources/aiModel/imageClassification.py";
                     String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
@@ -71,7 +82,7 @@ public class LeftSectionsControler extends Controler{
                     e.printStackTrace();
                 }
 
-                imageManager.saveFileToProjectFolder(file, classRes, confidence);
+                imageManager.saveFileToProjectFolder(file, classRes);
 
                 // Use Platform.runLater to update the UI
                 String[] finalClassRes = classRes;
@@ -104,13 +115,12 @@ public class LeftSectionsControler extends Controler{
         imageView.setFitHeight(40);
         HBox b = new HBox();
         Label name = new Label("Classified as: " + finalClassRes[0]);
-        Label prec = new Label(finalClassRes[1]+"%");
-        b.getChildren().addAll(imageView, name,prec);
+        Label prec = new Label(finalClassRes[1] + "%");
+        b.getChildren().addAll(imageView, name, prec);
         b.getStyleClass().add("res-class-area");
 
-        // UI updates must be done on the JavaFX Application Thread
         h.getChildren().remove(bar);
-        h.getChildren().add(0,b);
+        h.getChildren().add(0, b);
     }
 
 }

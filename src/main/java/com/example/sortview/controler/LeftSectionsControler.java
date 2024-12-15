@@ -25,14 +25,10 @@ import java.util.List;
 public class LeftSectionsControler extends Controler {
 
     private ImageManager imageManager;
-    private ArrayList<String> classifications;
-    private TilePane classesArea;
 
     public LeftSectionsControler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
         super(imageManager, classifications, classesArea);
         this.imageManager = imageManager;
-        this.classifications = classifications;
-        this.classesArea = classesArea;
     }
 
     public void loadImage(Stage primaryStage, VBox resVBOX, ImageView imageView) throws Exception {
@@ -67,7 +63,7 @@ public class LeftSectionsControler extends Controler {
             try {
                 ProgressBar bar = new ProgressBar();
                 bar.setPrefWidth(396);
-                bar.setPrefHeight(5);
+                bar.setPrefHeight(20);
                 Platform.runLater(() -> {
                     resVBOX.getChildren().remove(imageView);
                     resVBOX.getChildren().add(0, bar);

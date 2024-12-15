@@ -13,7 +13,7 @@ public class PythonScriptExecutor {
 
         String pythonCommand;
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            pythonCommand = "python";  // for Windows
+            pythonCommand = "C:\\Users\\NI SAV2\\AppData\\Local\\Programs\\Python\\Python312\\python.exe";  // for Windows
         } else {
             pythonCommand = System.getProperty("user.home") + "/su/bin/python";  // for Linux/Mac
         }

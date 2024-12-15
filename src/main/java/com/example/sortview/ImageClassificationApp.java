@@ -18,10 +18,8 @@ public class ImageClassificationApp extends Application {
         dbManager = new DatabaseManager();
         imageManager = new ImageManager(dbManager);
         ui = new ImageClassificationUI(primaryStage,imageManager);
-
         ui.setupUI();
     }
-
     public static void main(String[] args) {
         launch(args);
     }

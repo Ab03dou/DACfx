@@ -27,10 +27,9 @@ public class ErrorHandler extends Application {
         imageView.setFitHeight(25);
         Label errorLabel = new Label(errorMsg);
         root.getChildren().addAll(imageView, errorLabel);
-        root.getStyleClass().add("-fx-padding: 30px;");
 
-
-        Scene Error = new Scene(root, 200, 100);
+        Scene Error = new Scene(root, 300, 200);
+        stage.getIcons().add(errorImageView);
         stage.setTitle("Error");
         stage.setScene(Error);
         stage.show();

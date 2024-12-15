@@ -2,6 +2,7 @@ package com.example.sortview.controler;
 
 import com.example.sortview.UI.CustomImageView;
 import com.example.sortview.UI.ImageClassificationUI;
+import com.example.sortview.model.DatabaseManager;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -11,6 +12,8 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,20 +51,27 @@ public class Controler {
                 CustomImageView imageView = new CustomImageView(image, imagePath);
                 imageView.setFitWidth(60);
                 imageView.setFitHeight(60);
-                if (this.classesArea.getChildren().size() == classificationIndex) {
-                    boolean check = true;
-                    for (int j = 0; j < classifications.size()-1; j++) {
-                        if (classifications.get(j).equals(s)) {
-                            classificationIndex=j;
-                            check=false;
+                DatabaseManager dbManager = new DatabaseManager();
+                ArrayList<String> ClassesNamesOld = null;
+                try (Connection conn = dbManager.connectToDatabase()) {
+                    ClassesNamesOld = dbManager.getClassesNamesOld(conn);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (ClassesNamesOld.size() < classifications.size()) {
+                    if (!ClassesNamesOld.contains(s)) {
+                        createChild(s);
+                        try (Connection conn = dbManager.connectToDatabase()) {
+                            dbManager.saveCLassName(conn, s);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
-                    }
 
-                    if (check) createChild(s); //TODO: riglt mchkl jat gholta ki wla classes sorted bl name mn9droch ndiro bl index haka
-                    //7al mo9tarah dir table hat fih classes li kaynin w9arn
+                    }
                 }
                 VBox vBox = (VBox) this.classesArea.getChildren().get(classificationIndex);
                 GridPane classAlbum = (GridPane) vBox.getChildren().get(0);
+
                 classAlbum.add(imageView, i % 2, i / 2);
             }
         }

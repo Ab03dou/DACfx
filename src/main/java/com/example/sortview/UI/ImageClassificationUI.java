@@ -42,7 +42,7 @@ public class ImageClassificationUI {
         Scene scene = new Scene(root, 1380, 700);
         scene.getStylesheets().add(getClass().getResource("/styles/classification.css").toExternalForm());
 
-        Image image = new Image(getClass().getResource("/logo/logo.png").toExternalForm());
+        Image image = new Image(getClass().getResource("/logo/logo-icon.png").toExternalForm());
         primaryStage.getIcons().add(image);
         primaryStage.setTitle("SortView");
         primaryStage.setMinWidth(800);

@@ -33,8 +33,8 @@ public class ImageManager {
         }
         copyImage(originalFile.getAbsolutePath(), destFile.getAbsolutePath());
 
-        try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            dbManager.saveImagePath(conn, destFile.getAbsolutePath(),classification[0],Double.parseDouble(classification[1]));
+        try (Connection conn = dbManager.connectToDatabase()) {
+            dbManager.saveImagePath(conn, destFile.getAbsolutePath(), classification[0], Double.parseDouble(classification[1]));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class ImageManager {
     }
 
     public List<File> getImagesForClassification(String classification) {
-        try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
+        try (Connection conn = dbManager.connectToDatabase()) {
             return dbManager.getFilesForClassification(classification, conn);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,15 +56,14 @@ public class ImageManager {
 
     public ArrayList<String> getClassesNames() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("All");
-        try (Connection conn = dbManager.connectToDatabase(IMAGE_DIRECTORY)) {
-            list.addAll(dbManager.getClassesNamesDB(conn));
+
+        try (Connection conn = dbManager.connectToDatabase()) {
+            list.addAll(dbManager.getClassesNamesNew(conn));
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
-
     }
 }
 

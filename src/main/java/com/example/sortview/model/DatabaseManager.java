@@ -137,7 +137,7 @@ public class DatabaseManager {
     }
 
     public ArrayList<String> getClassesNamesNew(Connection conn) {
-        String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".images ORDER BY className ASC";
+        String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".images";
 
         ArrayList<String> classList = new ArrayList<>();
 
@@ -156,7 +156,7 @@ public class DatabaseManager {
     }
 
     public ArrayList<String> getClassesNamesOld(Connection conn) {
-        String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".className ORDER BY className ASC";
+        String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".className";
         ArrayList<String> classList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(getClasses);

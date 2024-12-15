@@ -112,7 +112,7 @@ public class ImageClassificationUI {
         rightSection.getStylesheets().add(getClass().getResource("/styles/RightSection.css").toExternalForm());
 
         classesArea = new TilePane();
-        classesArea.setPrefSize(700,700);
+        classesArea.setPrefSize(800,700);
         classesArea.getStyleClass().add("classes-area");
 
         classifications = imageManager.getClassesNames();

@@ -23,12 +23,16 @@ public class ErrorHandler extends Application {
 
         Image errorImageView = new Image(getClass().getResource("/icons/error-icon.png").toExternalForm());
         ImageView imageView = new ImageView(errorImageView);
-        imageView.setFitWidth(25);
-        imageView.setFitHeight(25);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
         Label errorLabel = new Label(errorMsg);
+        errorLabel.setWrapText(true);
         root.getChildren().addAll(imageView, errorLabel);
+        root.getStyleClass().add("root");
+        errorLabel.getStyleClass().add("label");
+        root.getStylesheets().add(getClass().getResource("/styles/Error.css").toExternalForm());
 
-        Scene Error = new Scene(root, 300, 200);
+        Scene Error = new Scene(root, 400, 150);
         stage.getIcons().add(errorImageView);
         stage.setTitle("Error");
         stage.setScene(Error);

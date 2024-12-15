@@ -58,8 +58,10 @@ public class ClassesAlbum extends Application {
         Scene imageScene = new Scene(root, 800, 600);
         imageScene.getStylesheets().add(getClass().getResource("/styles/album.css").toExternalForm());
 
-
+        Image image = new Image(getClass().getResource("/logo/logo-icon.png").toExternalForm());
+        stage.getIcons().add(image);
         stage.setTitle("Images");
+        stage.setMaximized(true);
         stage.setScene(imageScene);
         stage.show();
     }
@@ -78,8 +80,10 @@ public class ClassesAlbum extends Application {
         pane.setCenter(imageView);
 
         Scene scene = new Scene(pane, 800, 600);
-
+        Image imageLogo = new Image(getClass().getResource("/logo/logo-icon.png").toExternalForm());
+        stage.getIcons().add(imageLogo);
         stage.setTitle("Image");
+        stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
     }

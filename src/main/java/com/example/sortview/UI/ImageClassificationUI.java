@@ -45,8 +45,7 @@ public class ImageClassificationUI {
         Image image = new Image(getClass().getResource("/logo/logo-icon.png").toExternalForm());
         primaryStage.getIcons().add(image);
         primaryStage.setTitle("SortView");
-        primaryStage.setMinWidth(800);
-        primaryStage.setMinHeight(600);
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -59,18 +58,18 @@ public class ImageClassificationUI {
 
     private VBox createLeftSection() {
 
-        VBox leftSection = new VBox(20);
+        VBox leftSection = new VBox();
         leftSection.getStylesheets().add(getClass().getResource("/styles/LeftSection.css").toExternalForm());
         leftSection.getStyleClass().add("left-section");
 
-        VBox uploadArea = new VBox(15);
+        VBox uploadArea = new VBox();
         uploadArea.getStyleClass().add("upload-area");
 
         Label uploadLabel = new Label("Classify Your Images with SortView");
         uploadLabel.getStyleClass().add("upload-label");
 
-        Label subLabel = new Label("Select your images and let our AI classify them instantly");
-
+        Label subLabel = new Label("Select your images and let our AI classify them instantly\n\n");
+        subLabel.getStyleClass().add("upload-subtext");
         Button uploadButton = new Button("Choose Files");
         uploadButton.getStyleClass().add("upload-button");
 
@@ -80,7 +79,7 @@ public class ImageClassificationUI {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(300);
         imageView.setFitHeight(300);
-        VBox.setMargin(imageView, new Insets(0, 0, 0, 50));
+        VBox.setMargin(imageView, new Insets(0, 0, 0, 90));
         resVBOX.getChildren().add(0, imageView);
 
         ScrollPane s = new ScrollPane(resVBOX);
@@ -112,7 +111,7 @@ public class ImageClassificationUI {
         rightSection.getStylesheets().add(getClass().getResource("/styles/RightSection.css").toExternalForm());
 
         classesArea = new TilePane();
-        classesArea.setPrefSize(800,700);
+        classesArea.setPrefSize(700,700);
         classesArea.getStyleClass().add("classes-area");
 
         classifications = imageManager.getClassesNames();

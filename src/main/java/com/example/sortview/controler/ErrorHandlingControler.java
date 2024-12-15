@@ -1,14 +1,10 @@
 package com.example.sortview.controler;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifIFD0Directory;
 import com.example.sortview.UI.ErrorHandler;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +35,18 @@ public class ErrorHandlingControler {
     }
 
 
-    public void createErrorMsgGUI(String empty) {
-        ErrorHandler errorHandler = new ErrorHandler(empty);
+    public boolean canContnuie(double v) {
+        return createErrorMsgGUI("the image could not be classified with confidence.\nthe model may not support this type of images. do you want to continue?", v);
+    }
+
+    public void createErrorMsgGUI(String errorMsg) {
+        ErrorHandler errorHandler = new ErrorHandler(errorMsg);
         errorHandler.start(new Stage());
+    }
+
+    private boolean createErrorMsgGUI(String errorMsg, double v) {
+        ErrorHandler errorHandler = new ErrorHandler(errorMsg,v);
+        return errorHandler.askForCon();
     }
 
     public boolean isValidImage(File file) {

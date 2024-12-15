@@ -47,10 +47,8 @@ public class LeftSectionsControler extends Controler {
                     if (errorHandlingControler.checkImages(files))
                         handleFileUpload(files, resVBOX, imageView);
                     return null;
-
                 }
             };
-
             new Thread(uploadTask).start();
         } else {
             ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
@@ -62,7 +60,7 @@ public class LeftSectionsControler extends Controler {
         for (File file : files) {
             try {
                 ProgressBar bar = new ProgressBar();
-                bar.setPrefWidth(396);
+                bar.setPrefWidth(500);
                 bar.setPrefHeight(20);
                 Platform.runLater(() -> {
                     resVBOX.getChildren().remove(imageView);
@@ -70,33 +68,41 @@ public class LeftSectionsControler extends Controler {
                 });
 
                 String[] classRes = {};
+                boolean canContnuie = true;
                 try {
                     String scriptPath = "src/main/resources/aiModel/imageClassification.py";
                     String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
                     classRes = result.split(" ");
+                    if (Double.parseDouble(classRes[1]) < 50) {
+                        ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+                        canContnuie = errorHandlingControler.canContnuie(Double.parseDouble(classRes[1]));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if (canContnuie) {
+                    imageManager.saveFileToProjectFolder(file, classRes);
 
-                imageManager.saveFileToProjectFolder(file, classRes);
+                    // Use Platform.runLater to update the UI
+                    String[] finalClassRes = classRes;
+                    Platform.runLater(() -> {
+                        try {
+                            showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
-                // Use Platform.runLater to update the UI
-                String[] finalClassRes = classRes;
-                Platform.runLater(() -> {
-                    try {
-                        showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                Platform.runLater(() -> {
-                    try {
-                        showIMagesInClasses();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
+                    Platform.runLater(() -> {
+                        try {
+                            showIMagesInClasses();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    resVBOX.getChildren().remove(bar);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

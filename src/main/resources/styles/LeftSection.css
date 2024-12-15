@@ -1,9 +1,6 @@
 
 .left-section {
-    -fx-pref-width: 500px;
-    -fx-min-width: 300px;
     -fx-spacing: 15px;
-    -fx-padding: 20px;
 }
 
 .upload-area {
@@ -32,7 +29,6 @@
 
 .upload-subtext {
     -fx-font-size: 14px;
-    -fx-text-fill: #7f8c8d;
     -fx-text-alignment: center;
 }
 
@@ -67,6 +63,7 @@
 }
 .res-SCROLL{
     -fx-pref-width: 700px;
+    -fx-vgap: 90px;
     -fx-pref-height: 500px;
     -fx-padding: 30px;
     -fx-background-radius: 10px;
@@ -76,9 +73,11 @@
 
 
 .res-class-area {
-    -fx-spacing: 10px;
-    -fx-background-color: #AED6F1;
+    -fx-font-size: 24px;
+    -fx-spacing: 20px;
     -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+    -fx-background-radius: 10px;
     -fx-border-width: 1px;
     -fx-alignment: center-left;
 }

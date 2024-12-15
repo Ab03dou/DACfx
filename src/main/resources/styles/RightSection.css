@@ -1,7 +1,7 @@
 /* right section for classifications */
 .right-section {
-    -fx-pref-width: 700px;
-    -fx-padding: 30px;
+    -fx-pref-width: 900px;
+    -fx-padding: 10px;
     -fx-background-color: #4aa3fa;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
@@ -13,7 +13,7 @@
 
 .classes-area {
     -fx-hgap: 50px;
-    -fx-vgap: 50px;
+    -fx-vgap: 20px;
     -fx-background-color: #4aa3fa;
     -fx-padding: 10px;
 }

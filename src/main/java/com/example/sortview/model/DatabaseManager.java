@@ -16,10 +16,8 @@ public class DatabaseManager {
 
     public Connection connectToDatabase() {
         try {
-            // First, connect to the MySQL server
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            // Check if the database exists
             ResultSet resultSet = conn.getMetaData().getCatalogs();
             boolean databaseExists = false;
 
@@ -32,7 +30,6 @@ public class DatabaseManager {
             }
             resultSet.close();
 
-            // If database doesn't exist, create it
             if (!databaseExists) {
                 try (Statement stmt = conn.createStatement()) {
                     stmt.executeUpdate("CREATE DATABASE " + DB_NAME);
@@ -57,7 +54,6 @@ public class DatabaseManager {
                 }
             }
 
-            // Close the initial connection and reconnect to the specific database
             conn.close();
             conn = DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASSWORD);
             return conn;
@@ -123,7 +119,6 @@ public class DatabaseManager {
                     String filePath = rs.getString("filePath");
                     File file = new File(filePath);
 
-                    // Optional: Add only image files with specific extensions
                     if (file.exists() && (filePath.toLowerCase().endsWith(".jpg") ||
                             filePath.toLowerCase().endsWith(".png") ||
                             filePath.toLowerCase().endsWith(".jpeg"))) {

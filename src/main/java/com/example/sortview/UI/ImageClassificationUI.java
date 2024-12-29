@@ -129,7 +129,7 @@ public class ImageClassificationUI {
                 Label classAlbumName = new Label(classifications.get(i));
                 classAlbumName.getStyleClass().add("classAlbumName-label");
 
-                VBox contactClassAlbum = new VBox(5); // 5 is the spacing between elements
+                VBox contactClassAlbum = new VBox(5);
                 contactClassAlbum.getChildren().addAll(classAlbum, classAlbumName);
 
                 classesArea.getChildren().add(contactClassAlbum);

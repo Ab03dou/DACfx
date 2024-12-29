@@ -15,7 +15,7 @@ public class PythonScriptExecutor {
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             pythonCommand = "C:\\Users\\NI SAV2\\AppData\\Local\\Programs\\Python\\Python312\\python.exe";  // for Windows
         } else {
-            pythonCommand = System.getProperty("user.home") + "/su/bin/python";  // for Linux/Mac
+            pythonCommand = System.getProperty("user.home") + "/su/bin/python";  // for Arch-Linux
         }
         try {
             List<String> commands = new ArrayList<>();
@@ -28,12 +28,9 @@ public class PythonScriptExecutor {
 
             Process process = processBuilder.start();
 
-            // Read the output
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder output = new StringBuilder();
             String line;
             String lastLine = "";
-            // Read all lines but keep only the last one
             while ((line = reader.readLine()) != null) {
                 if (!line.trim().isEmpty()) {
                     lastLine = line;

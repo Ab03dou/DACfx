@@ -11,7 +11,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// Manages Image-related Operations
 public class ImageManager {
     private static final String IMAGE_DIRECTORY = "images";
     private DatabaseManager dbManager;

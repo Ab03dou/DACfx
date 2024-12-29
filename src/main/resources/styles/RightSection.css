@@ -1,4 +1,3 @@
-/* right section for classifications */
 .right-section {
     -fx-pref-width: 900px;
     -fx-padding: 10px;
@@ -26,7 +25,6 @@
     -fx-padding: 10px;
 }
 
-/* Hover effect for content areas */
 .classAlbum-area:hover {
     -fx-background-color: #a173fa;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);

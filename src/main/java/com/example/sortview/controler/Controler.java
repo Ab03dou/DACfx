@@ -90,7 +90,7 @@ public class Controler {
         Label classAlbumName = new Label(s);
         classAlbumName.getStyleClass().add("classAlbumName-label");
 
-        VBox contactClassAlbum = new VBox(5); // 5 is the spacing between elements
+        VBox contactClassAlbum = new VBox(5);
         contactClassAlbum.getChildren().addAll(classAlbum, classAlbumName);
 
         classesArea.getChildren().add(contactClassAlbum);

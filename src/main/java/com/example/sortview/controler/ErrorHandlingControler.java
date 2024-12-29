@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ErrorHandlingControler {
     public boolean checkImages(List<File> files) {
-        // Check if the file is valid
         for (int i = 0; i < files.size(); i++) {
             long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
             if (files.get(i).length() <= MAX_FILE_SIZE) {
@@ -51,14 +50,13 @@ public class ErrorHandlingControler {
 
     public boolean isValidImage(File file) {
         try {
-            // Attempt to read the file as an image
             BufferedImage image = ImageIO.read(file);
             if (image != null) {
-                return true; // File is a valid image
+                return true;
             }
         } catch (IOException e) {
             System.out.println("Error reading the image: " + e.getMessage());
         }
-        return false; // File is not a valid image
+        return false;
     }
 }

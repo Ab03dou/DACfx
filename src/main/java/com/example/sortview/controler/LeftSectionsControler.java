@@ -64,7 +64,7 @@ public class LeftSectionsControler extends Controler {
                 bar.setPrefHeight(20);
                 Platform.runLater(() -> {
                     resVBOX.getChildren().remove(imageView);
-                    resVBOX.getChildren().add(0, bar);
+                    resVBOX.getChildren().addFirst(bar);
                 });
 
                 String[] classRes = {};
@@ -73,7 +73,7 @@ public class LeftSectionsControler extends Controler {
                     String scriptPath = "src/main/resources/aiModel/imageClassification.py";
                     String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
                     classRes = result.split(" ");
-                    if (Double.parseDouble(classRes[1]) < 50) {
+                    if (Double.parseDouble(classRes[1]) < 50) { // classRes[1] is the confidence of the image
                         ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
                         canContnuie = errorHandlingControler.canContnuie(Double.parseDouble(classRes[1]));
                     }
@@ -83,7 +83,6 @@ public class LeftSectionsControler extends Controler {
                 if (canContnuie) {
                     imageManager.saveFileToProjectFolder(file, classRes);
 
-                    // Use Platform.runLater to update the UI
                     String[] finalClassRes = classRes;
                     Platform.runLater(() -> {
                         try {
@@ -101,7 +100,9 @@ public class LeftSectionsControler extends Controler {
                         }
                     });
                 } else {
-                    resVBOX.getChildren().remove(bar);
+                    Platform.runLater(() -> {
+                        resVBOX.getChildren().removeFirst();
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -2,7 +2,6 @@ package com.example.sortview.controler;
 
 import com.example.sortview.UI.CustomImageView;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -13,8 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,91 +19,74 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeftSectionsControler extends Controler {
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class HandleFileUpload extends Controler  implements Runnable {
 
     private ImageManager imageManager;
+    private File file;
+    private VBox resVBOX;
+    private ImageView imageView;
 
-    public LeftSectionsControler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
+    public HandleFileUpload(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea,File file, VBox resVBOX, ImageView imageView) {
         super(imageManager, classifications, classesArea);
         this.imageManager = imageManager;
+        this.file = file;
+        this.imageView = imageView;
+        this.resVBOX = resVBOX;
     }
 
-    public void loadImage(Stage primaryStage, VBox resVBOX, ImageView imageView) throws Exception {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Image Files");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+    @Override
+    public void run() {
+        try {
+            ProgressBar bar = new ProgressBar();
+            bar.setPrefWidth(500);
+            bar.setPrefHeight(20);
+            Platform.runLater(() -> {
+                resVBOX.getChildren().remove(imageView);
+                resVBOX.getChildren().addFirst(bar);
+            });
 
-
-        List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
-        if (files != null) {
-            Task<Void> uploadTask = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
-                    if (errorHandlingControler.checkImages(files))
-                        handleFileUpload(files, resVBOX, imageView);
-                    return null;
-                }
-            };
-            new Thread(uploadTask).start();
-        } else {
-            ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
-            errorHandlingControler.createErrorMsgGUI("you didn't select any images for classify pleas try again.");
-        }
-    }
-
-    private void handleFileUpload(List<File> files, VBox resVBOX, ImageView imageView) {
-        for (File file : files) {
+            String[] classRes = {};
+            boolean canContnuie = true;
             try {
-                ProgressBar bar = new ProgressBar();
-                bar.setPrefWidth(500);
-                bar.setPrefHeight(20);
-                Platform.runLater(() -> {
-                    resVBOX.getChildren().remove(imageView);
-                    resVBOX.getChildren().addFirst(bar);
-                });
-
-                String[] classRes = {};
-                boolean canContnuie = true;
-                try {
-                    String scriptPath = "src/main/resources/aiModel/imageClassification.py";
-                    String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
-                    classRes = result.split(" ");
-                    if (Double.parseDouble(classRes[1]) < 50) { // classRes[1] is the confidence of the image
-                        ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
-                        canContnuie = errorHandlingControler.canContnuie(Double.parseDouble(classRes[1]));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String scriptPath = "src/main/resources/aiModel/imageClassification.py";
+                String result = PythonScriptExecutor.executePythonScript(scriptPath, file.getAbsolutePath());
+                classRes = result.split(" ");
+                if (Double.parseDouble(classRes[1]) < 50) { // classRes[1] is the confidence of the image
+                    ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+                    canContnuie = errorHandlingControler.canContnuie(Double.parseDouble(classRes[1]));
                 }
-                if (canContnuie) {
-                    imageManager.saveFileToProjectFolder(file, classRes);
-
-                    String[] finalClassRes = classRes;
-                    Platform.runLater(() -> {
-                        try {
-                            showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    });
-
-                    Platform.runLater(() -> {
-                        try {
-                            showIMagesInClasses();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        resVBOX.getChildren().removeFirst();
-                    });
-                }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (canContnuie) {
+                imageManager.saveFileToProjectFolder(file, classRes);
+
+                String[] finalClassRes = classRes;
+                Platform.runLater(() -> {
+                    try {
+                        showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                Platform.runLater(() -> {
+                    try {
+                        showIMagesInClasses();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                Platform.runLater(() -> {
+                    resVBOX.getChildren().removeFirst();
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -124,6 +104,44 @@ public class LeftSectionsControler extends Controler {
 
         h.getChildren().remove(bar);
         h.getChildren().add(0, b);
+    }
+}
+
+public class LeftSectionsControler extends Controler {
+
+    private ImageManager imageManager;
+    private ArrayList<String> classifications;
+    private TilePane classesArea;
+
+    public LeftSectionsControler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
+        super(imageManager, classifications, classesArea);
+        this.classifications=classifications;
+        this.imageManager = imageManager;
+        this.classesArea=classesArea;
+    }
+
+    public void loadImage(Stage primaryStage, VBox resVBOX, ImageView imageView) throws Exception {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image Files");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+
+
+        List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
+        if (files != null) {
+
+            ExecutorService executor = Executors.newFixedThreadPool(files.size());
+            ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+            if (errorHandlingControler.checkImages(files)) {
+                for (File file : files) {
+                    executor.submit(new HandleFileUpload(imageManager, classifications, classesArea,file, resVBOX, imageView));
+                }
+            }
+            executor.shutdown();
+        } else {
+            ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
+            errorHandlingControler.createErrorMsgGUI("you didn't select any images for classify pleas try again.");
+        }
     }
 
 }

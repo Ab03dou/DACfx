@@ -106,9 +106,9 @@ public class ImageClassificationUI {
     }
 
     private VBox createRightSection() throws FileNotFoundException {
-        VBox rightSection = new VBox();
-        rightSection.getStyleClass().add("right-section");
-        rightSection.getStylesheets().add(getClass().getResource("/styles/RightSection.css").toExternalForm());
+        VBox createRightSec = new VBox();
+        createRightSec.getStyleClass().add("right-section");
+        createRightSec.getStylesheets().add(getClass().getResource("/styles/RightSection.css").toExternalForm());
 
         classesArea = new TilePane();
         classesArea.setPrefSize(700,700);
@@ -117,7 +117,7 @@ public class ImageClassificationUI {
         classifications = imageManager.getClassesNames();
         RightSectionsControler r = new RightSectionsControler(imageManager, classesArea);
 
-        if (classifications.size() != 0) {
+        if (!classifications.isEmpty()) {
             for (int i = 0; i < classifications.size(); i++) {
                 GridPane classAlbum = new GridPane();
                 classAlbum.getStyleClass().add("classAlbum-area");
@@ -155,8 +155,8 @@ public class ImageClassificationUI {
         s.getStyleClass().add("scroll-pane-section");
 
         s.setPrefSize(700,700);
-        rightSection.getChildren().add(s);
-        return rightSection;
+        createRightSec.getChildren().add(s);
+        return createRightSec;
     }
 
     public static void setRightSection(TilePane tp) {

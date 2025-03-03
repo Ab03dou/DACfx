@@ -1,6 +1,6 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.ErrorHandler;
+import com.example.sortview.ui.ErrorHandler;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 

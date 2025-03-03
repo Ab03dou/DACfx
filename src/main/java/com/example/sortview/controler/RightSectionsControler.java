@@ -1,6 +1,6 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.ClassesAlbum;
+import com.example.sortview.ui.ClassesAlbum;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 

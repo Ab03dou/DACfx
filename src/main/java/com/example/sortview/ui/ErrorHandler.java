@@ -1,4 +1,4 @@
-package com.example.sortview.UI;
+package com.example.sortview.ui;
 
 import javafx.application.Application;
 import javafx.application.Platform;

@@ -150,7 +150,7 @@ public class DatabaseManager {
         return classList;
     }
 
-    public ArrayList<String> getClassesNamesOld(Connection conn) {
+    public List<String> getClassesNamesOld(Connection conn) {
         String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".className";
         ArrayList<String> classList = new ArrayList<>();
 

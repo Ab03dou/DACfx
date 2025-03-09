@@ -52,7 +52,7 @@ public class Controler {
                 imageView.setFitWidth(60);
                 imageView.setFitHeight(60);
                 DatabaseManager dbManager = new DatabaseManager();
-                ArrayList<String> ClassesNamesOld = null;
+                List<String> ClassesNamesOld = null;
                 try (Connection conn = dbManager.connectToDatabase()) {
                     ClassesNamesOld = dbManager.getClassesNamesOld(conn);
                 } catch (SQLException e) {

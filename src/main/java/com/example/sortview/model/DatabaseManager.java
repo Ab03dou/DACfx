@@ -131,7 +131,7 @@ public class DatabaseManager {
         return files;
     }
 
-    public ArrayList<String> getClassesNamesNew(Connection conn) {
+    public List<String> getClassesNamesNew(Connection conn) {
         String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".images";
 
         ArrayList<String> classList = new ArrayList<>();

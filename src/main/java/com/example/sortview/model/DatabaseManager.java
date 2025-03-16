@@ -5,6 +5,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DatabaseManager {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
@@ -12,6 +15,8 @@ public class DatabaseManager {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
     private static final String IMAGE_DIRECTORY = "images";
+    private static final Logger logger = LoggerFactory.getLogger(Connection.class);
+
 
 
     public Connection connectToDatabase() {
@@ -34,7 +39,7 @@ public class DatabaseManager {
                 try (Statement stmt = conn.createStatement()) {
                     stmt.executeUpdate("CREATE DATABASE " + DB_NAME);
 
-                    System.out.println("Database " + DB_NAME + " created successfully.");
+                    logger.info("Database " + DB_NAME + " created successfully.");
                 }
                 String createTableSQLForIMAGE_DIRECTORY = "CREATE TABLE IF NOT EXISTS " + DB_NAME + "." + IMAGE_DIRECTORY + " (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +

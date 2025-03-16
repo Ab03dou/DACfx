@@ -5,6 +5,9 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.sortview.ui.ErrorHandler;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ErrorHandlingControler {
+    private static final Logger logger = LoggerFactory.getLogger(ErrorHandlingControler.class);
     public boolean checkImages(List<File> files) {
         for (int i = 0; i < files.size(); i++) {
             long MAX_FILE_SIZE = 5L * 1024 * 1024; // 5 MB
@@ -57,7 +61,7 @@ public class ErrorHandlingControler {
                 return true;
             }
         } catch (IOException e) {
-            System.out.println("Error reading the image: " + e.getMessage());
+            logger.error("Error reading the image: {}", e.getMessage(), e);
         }
         return false;
     }

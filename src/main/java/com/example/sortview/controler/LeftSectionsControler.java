@@ -62,7 +62,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                 Thread.currentThread().interrupt(); // Preserve interrupted status
                 throw new RuntimeException("Thread was interrupted", e); // Optionally rethrow
             } catch (Exception e) {
-                e.printStackTrace(); // Handle other exceptions
+                throw new RuntimeException("Failed to process the file", e); // Handle other exceptions
             }
             if (canContnuie) {
                 imageManager.saveFileToProjectFolder(file, classRes);
@@ -72,7 +72,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                     try {
                         showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException("Failed to process the file", e);
                     }
                 });
 
@@ -80,7 +80,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                     try {
                         showIMagesInClasses();
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException("Failed to process the file", e);
                     }
                 });
             } else {
@@ -89,7 +89,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                 });
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to process the file", e);
         }
     }
 

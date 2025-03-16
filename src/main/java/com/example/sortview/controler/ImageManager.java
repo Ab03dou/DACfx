@@ -35,7 +35,7 @@ public class ImageManager {
         try (Connection conn = dbManager.connectToDatabase()) {
             dbManager.saveImagePath(conn, destFile.getAbsolutePath(), classification[0], Double.parseDouble(classification[1]));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to process the file", e);
         }
     }
 
@@ -48,7 +48,7 @@ public class ImageManager {
         try (Connection conn = dbManager.connectToDatabase()) {
             return dbManager.getFilesForClassification(classification, conn);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to process the file", e);
             return new ArrayList<>();
         }
     }
@@ -60,7 +60,7 @@ public class ImageManager {
             list.addAll(dbManager.getClassesNamesNew(conn));
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to process the file", e);
             return new ArrayList<>();
         }
     }

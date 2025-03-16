@@ -57,7 +57,7 @@ public class Controler {
                 try (Connection conn = dbManager.connectToDatabase()) {
                     classesNamesOld = dbManager.getClassesNamesOld(conn);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("Failed to process the file", e);
                 }
                 if (classesNamesOld.size() < classifications.size()) {
                     if (!classesNamesOld.contains(s)) {
@@ -65,7 +65,7 @@ public class Controler {
                         try (Connection conn = dbManager.connectToDatabase()) {
                             dbManager.saveCLassName(conn, s);
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            throw new RuntimeException("Failed to process the file", e);
                         }
 
                     }

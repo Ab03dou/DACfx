@@ -16,10 +16,11 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImageClassificationUI {
     private Stage primaryStage;
-    private ArrayList<String> classifications;
+    private List<String> classifications;
     private ImageManager imageManager;
 
     private TilePane classesArea;

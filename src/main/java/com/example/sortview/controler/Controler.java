@@ -20,10 +20,10 @@ import java.util.List;
 
 public class Controler {
     private ImageManager imageManager;
-    private ArrayList<String> classifications;
+    private List<String> classifications;
     private TilePane classesArea;
 
-    public Controler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
+    public Controler(ImageManager imageManager, List<String> classifications, TilePane classesArea) {
         this.imageManager = imageManager;
         this.classesArea = classesArea;
         this.classifications = classifications;

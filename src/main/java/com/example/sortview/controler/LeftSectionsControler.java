@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import java.util.concurrent.ExecutorService;
@@ -30,7 +29,7 @@ class HandleFileUpload extends Controler  implements Runnable {
     private VBox resVBOX;
     private ImageView imageView;
 
-    public HandleFileUpload(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea,File file, VBox resVBOX, ImageView imageView) {
+    public HandleFileUpload(ImageManager imageManager, List<String> classifications, TilePane classesArea,File file, VBox resVBOX, ImageView imageView) {
         super(imageManager, classifications, classesArea);
         this.imageManager = imageManager;
         this.file = file;
@@ -114,12 +113,12 @@ class HandleFileUpload extends Controler  implements Runnable {
 public class LeftSectionsControler extends Controler {
 
     private ImageManager imageManager;
-    private ArrayList<String> classifications;
+    private List<String> classifications;
     private TilePane classesArea;
 
-    public LeftSectionsControler(ImageManager imageManager, ArrayList<String> classifications, TilePane classesArea) {
-        super(imageManager, classifications, classesArea);
-        this.classifications=classifications;
+    public LeftSectionsControler(ImageManager imageManager, List<String> classifications2, TilePane classesArea) {
+        super(imageManager, classifications2, classesArea);
+        this.classifications=classifications2;
         this.imageManager = imageManager;
         this.classesArea=classesArea;
     }

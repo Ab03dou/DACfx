@@ -53,8 +53,8 @@ public class ImageManager {
         }
     }
 
-    public ArrayList<String> getClassesNames() {
-        ArrayList<String> list = new ArrayList<>();
+    public List<String> getClassesNames() {
+        List<String> list = new ArrayList<>();
 
         try (Connection conn = dbManager.connectToDatabase()) {
             list.addAll(dbManager.getClassesNamesNew(conn));

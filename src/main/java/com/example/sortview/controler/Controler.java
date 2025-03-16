@@ -43,7 +43,7 @@ public class Controler {
         }
     }
 
-    private void displayImagesFromDirectory(List<File> files, int classificationIndex, ArrayList<String> classifications, String s) throws FileNotFoundException {
+    private void displayImagesFromDirectory(List<File> files, int classificationIndex, List<String> classifications, String s) throws FileNotFoundException {
         if (files != null && !files.isEmpty()) {
             for (int i = 0; i < Math.min(files.size(), 4); i++) {
                 File imageFile = files.get(i);
@@ -53,7 +53,7 @@ public class Controler {
                 imageView.setFitWidth(60);
                 imageView.setFitHeight(60);
                 DatabaseManager dbManager = new DatabaseManager();
-                ArrayList<String> classesNamesOld = null;
+                List<String> classesNamesOld = null;
                 try (Connection conn = dbManager.connectToDatabase()) {
                     classesNamesOld = dbManager.getClassesNamesOld(conn);
                 } catch (SQLException e) {

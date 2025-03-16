@@ -131,10 +131,10 @@ public class DatabaseManager {
         return files;
     }
 
-    public ArrayList<String> getClassesNamesNew(Connection conn) {
+    public List<String> getClassesNamesNew(Connection conn) {
         String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".images";
 
-        ArrayList<String> classList = new ArrayList<>();
+        List<String> classList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(getClasses);
              ResultSet rs = pstmt.executeQuery()) {
@@ -150,9 +150,9 @@ public class DatabaseManager {
         return classList;
     }
 
-    public ArrayList<String> getClassesNamesOld(Connection conn) {
+    public List<String> getClassesNamesOld(Connection conn) {
         String getClasses = "SELECT DISTINCT className FROM "+DB_NAME+".className";
-        ArrayList<String> classList = new ArrayList<>();
+        List<String> classList = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(getClasses);
              ResultSet rs = pstmt.executeQuery()) {

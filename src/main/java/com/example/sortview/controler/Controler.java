@@ -59,8 +59,8 @@ public class Controler {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                if (ClassesNamesOld.size() < classifications.size()) {
-                    if (!ClassesNamesOld.contains(s)) {
+                if (classesNamesOld.size() < classifications.size()) {
+                    if (!classesNamesOld.contains(s)) {
                         createChild(s);
                         try (Connection conn = dbManager.connectToDatabase()) {
                             dbManager.saveCLassName(conn, s);

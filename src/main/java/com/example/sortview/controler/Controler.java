@@ -61,15 +61,12 @@ public class Controler {
                 } catch (SQLException e) {
                       logger.error("An error occurred: ", e);
                 }
-                if (classesNamesOld.size() < classifications.size()) {
-                    if (!classesNamesOld.contains(s)) {
-                        createChild(s);
-                        try (Connection conn = dbManager.connectToDatabase()) {
-                            dbManager.saveCLassName(conn, s);
-                        } catch (SQLException e) {
-                              logger.error("An error occurred: ", e);
-                        }
-
+                if (classesNamesOld.size() < classifications.size() && !classesNamesOld.contains(s)) {
+                    createChild(s);
+                    try (Connection conn = dbManager.connectToDatabase()) {
+                        dbManager.saveCLassName(conn, s);
+                    } catch (SQLException e) {
+                        logger.error("An error occurred: ", e);
                     }
                 }
                 VBox vBox = (VBox) this.classesArea.getChildren().get(classificationIndex);

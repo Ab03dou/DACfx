@@ -11,9 +11,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ImageManager {
     private static final String IMAGE_DIRECTORY = "images";
     private DatabaseManager dbManager;
+    private static final Logger logger = LoggerFactory.getLogger(ImageManager.class);
+
 
     public ImageManager(DatabaseManager dbManager) {
         this.dbManager = dbManager;
@@ -35,7 +40,7 @@ public class ImageManager {
         try (Connection conn = dbManager.connectToDatabase()) {
             dbManager.saveImagePath(conn, destFile.getAbsolutePath(), classification[0], Double.parseDouble(classification[1]));
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to process the file", e);
+              logger.error("An error occurred: ", e);
         }
     }
 
@@ -48,7 +53,7 @@ public class ImageManager {
         try (Connection conn = dbManager.connectToDatabase()) {
             return dbManager.getFilesForClassification(classification, conn);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to process the file", e);
+              logger.error("An error occurred: ", e);
             return new ArrayList<>();
         }
     }
@@ -60,7 +65,7 @@ public class ImageManager {
             list.addAll(dbManager.getClassesNamesNew(conn));
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to process the file", e);
+              logger.error("An error occurred: ", e);
             return new ArrayList<>();
         }
     }

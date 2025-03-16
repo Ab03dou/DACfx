@@ -15,6 +15,7 @@ module com.example.sortview {
     requires javafx.graphics;
     requires java.desktop;
     requires metadata.extractor;
+    requires org.slf4j;
 
     opens com.example.sortview to javafx.fxml;
     exports com.example.sortview;

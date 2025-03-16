@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.sortview.ui.CustomImageView;
 
 class HandleFileUpload extends Controler  implements Runnable {
@@ -28,6 +31,8 @@ class HandleFileUpload extends Controler  implements Runnable {
     private File file;
     private VBox resVBOX;
     private ImageView imageView;
+    private static final Logger logger = LoggerFactory.getLogger(HandleFileUpload.class);
+
 
     public HandleFileUpload(ImageManager imageManager, List<String> classifications, TilePane classesArea,File file, VBox resVBOX, ImageView imageView) {
         super(imageManager, classifications, classesArea);
@@ -62,7 +67,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                 Thread.currentThread().interrupt(); // Preserve interrupted status
                 throw new RuntimeException("Thread was interrupted", e); // Optionally rethrow
             } catch (Exception e) {
-                throw new RuntimeException("Failed to process the file", e); // Handle other exceptions
+                  logger.error("An error occurred: ", e); // Handle other exceptions
             }
             if (canContnuie) {
                 imageManager.saveFileToProjectFolder(file, classRes);
@@ -72,7 +77,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                     try {
                         showIMagesInResClasses(resVBOX, bar, file, finalClassRes);
                     } catch (FileNotFoundException e) {
-                        throw new RuntimeException("Failed to process the file", e);
+                          logger.error("An error occurred: ", e);
                     }
                 });
 
@@ -80,7 +85,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                     try {
                         showIMagesInClasses();
                     } catch (FileNotFoundException e) {
-                        throw new RuntimeException("Failed to process the file", e);
+                          logger.error("An error occurred: ", e);
                     }
                 });
             } else {
@@ -89,7 +94,7 @@ class HandleFileUpload extends Controler  implements Runnable {
                 });
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to process the file", e);
+              logger.error("An error occurred: ", e);
         }
     }
 

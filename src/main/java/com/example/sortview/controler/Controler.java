@@ -13,15 +13,17 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controler {
     private ImageManager imageManager;
     private List<String> classifications;
     private TilePane classesArea;
+    private static final Logger logger = LoggerFactory.getLogger(Controler.class);
 
     public Controler(ImageManager imageManager, List<String> classifications, TilePane classesArea) {
         this.imageManager = imageManager;
@@ -57,7 +59,7 @@ public class Controler {
                 try (Connection conn = dbManager.connectToDatabase()) {
                     classesNamesOld = dbManager.getClassesNamesOld(conn);
                 } catch (SQLException e) {
-                    throw new RuntimeException("Failed to process the file", e);
+                      logger.error("An error occurred: ", e);
                 }
                 if (classesNamesOld.size() < classifications.size()) {
                     if (!classesNamesOld.contains(s)) {
@@ -65,7 +67,7 @@ public class Controler {
                         try (Connection conn = dbManager.connectToDatabase()) {
                             dbManager.saveCLassName(conn, s);
                         } catch (SQLException e) {
-                            throw new RuntimeException("Failed to process the file", e);
+                              logger.error("An error occurred: ", e);
                         }
 
                     }

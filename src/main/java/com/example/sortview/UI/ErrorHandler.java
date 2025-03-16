@@ -105,15 +105,9 @@ public class ErrorHandler extends Application {
     }
 
 
-    public boolean askForCon() {
+    public boolean askForCon() throws InterruptedException {
         Platform.runLater(() -> start(new Stage()));
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        latch.await();
         return this.canContinue;
     }
 }

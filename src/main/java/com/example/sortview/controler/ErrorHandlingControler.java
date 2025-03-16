@@ -13,7 +13,7 @@ import java.util.List;
 public class ErrorHandlingControler {
     public boolean checkImages(List<File> files) {
         for (int i = 0; i < files.size(); i++) {
-            long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+            long MAX_FILE_SIZE = 5L * 1024 * 1024; // 5 MB
             if (files.get(i).length() <= MAX_FILE_SIZE) {
                 if (!isValidImage(files.get(i))) {
                     int finalI = i;

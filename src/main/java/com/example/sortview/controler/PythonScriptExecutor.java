@@ -43,8 +43,12 @@ public class PythonScriptExecutor {
             }
 
             return lastLine;
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to execute Python script", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread was interrupted while executing Python script", e);
         }
+        
     }
 }

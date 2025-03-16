@@ -1,10 +1,12 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.ErrorHandler;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+
+import com.example.sortview.ui.ErrorHandler;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

@@ -1,8 +1,9 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.CustomImageView;
-import com.example.sortview.UI.ImageClassificationUI;
 import com.example.sortview.model.DatabaseManager;
+import com.example.sortview.ui.CustomImageView;
+import com.example.sortview.ui.ImageClassificationUI;
+
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;

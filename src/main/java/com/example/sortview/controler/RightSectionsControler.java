@@ -1,12 +1,13 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.ClassesAlbum;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+
+import com.example.sortview.ui.ClassesAlbum;
 
 public class RightSectionsControler extends Controler {
 

@@ -1,6 +1,5 @@
 package com.example.sortview.controler;
 
-import com.example.sortview.UI.CustomImageView;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -21,6 +20,8 @@ import java.util.List;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import com.example.sortview.ui.CustomImageView;
 
 class HandleFileUpload extends Controler  implements Runnable {
 

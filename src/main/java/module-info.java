@@ -20,8 +20,8 @@ module com.example.sortview {
     exports com.example.sortview;
     exports com.example.sortview.controler;
     opens com.example.sortview.controler to javafx.fxml;
-    exports com.example.sortview.UI;
-    opens com.example.sortview.UI to javafx.fxml;
+    exports com.example.sortview.ui;
+    opens com.example.sortview.ui to javafx.fxml;
     exports com.example.sortview.model;
     opens com.example.sortview.model to javafx.fxml;
 }

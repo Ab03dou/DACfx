@@ -1,4 +1,4 @@
-package com.example.sortview.UI;
+package com.example.sortview.ui;
 
 import com.example.sortview.controler.*;
 import javafx.geometry.Insets;

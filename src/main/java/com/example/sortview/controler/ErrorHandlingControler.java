@@ -36,7 +36,7 @@ public class ErrorHandlingControler {
     }
 
 
-    public boolean canContnuie(double v) {
+    public boolean canContnuie(double v) throws InterruptedException {
         return createErrorMsgGUI("the image could not be classified with confidence.\nthe model may not support this type of images. do you want to continue?", v);
     }
 
@@ -45,7 +45,7 @@ public class ErrorHandlingControler {
         errorHandler.start(new Stage());
     }
 
-    private boolean createErrorMsgGUI(String errorMsg, double v) {
+    private boolean createErrorMsgGUI(String errorMsg, double v) throws InterruptedException {
         ErrorHandler errorHandler = new ErrorHandler(errorMsg,v);
         return errorHandler.askForCon();
     }

@@ -59,8 +59,11 @@ class HandleFileUpload extends Controler  implements Runnable {
                     ErrorHandlingControler errorHandlingControler = new ErrorHandlingControler();
                     canContnuie = errorHandlingControler.canContnuie(Double.parseDouble(classRes[1]));
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Preserve interrupted status
+                throw new RuntimeException("Thread was interrupted", e); // Optionally rethrow
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Handle other exceptions
             }
             if (canContnuie) {
                 imageManager.saveFileToProjectFolder(file, classRes);
